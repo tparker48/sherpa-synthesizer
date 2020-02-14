@@ -2,7 +2,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
+#include "TopoDataLoader.h"
 
 struct TopoSound : public SynthesiserSound
 {
@@ -19,6 +19,7 @@ class TopoVoice : public SynthesiserVoice
 public:
 
     TopoVoice() {}
+    TopoVoice(TopoData* topoData) { this->topoData = topoData; }
 
     bool canPlaySound(SynthesiserSound* sound) override
     {
@@ -36,6 +37,8 @@ public:
     void renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 
 private:
+    TopoData* topoData;
+
     void angleCap(); // call after you increment currentAngle to avoid overflows
 
     float currentAngle = 0.0, angleDelta = 0.0,

@@ -4,19 +4,24 @@
 #pragma one
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "TopoDataLoader.h"
 
 class PolySynth
 {
 public:
     
-    PolySynth (MidiKeyboardState& keyState): keyboardState (keyState) {}
+    PolySynth(MidiKeyboardState& keyState) : keyboardState(keyState) 
+    {
+        TopoDataLoader load("C:\\Users\\Tom\\Documents\\theMountain\\ImageHandler\\everest.csv");
+        this->topoData = load.getData();
+    }
     
     ~PolySynth()
     {
         synth.clearSounds();
         synth.clearVoices();
     }
-    
+
     int getNumVoices() const noexcept
     {
         return synth.getNumVoices();
@@ -45,10 +50,9 @@ public:
                              "First type must derive from the SynthesiserSound class.");
         
         for (auto i = 0; i < number; ++i)
-            synth.addVoice (new T1());
+            synth.addVoice (new T1(&topoData));
         
         synth.addSound (new T2());
-    
     }
     
 
@@ -93,4 +97,5 @@ private:
     MidiKeyboardState& keyboardState;
     MidiMessageCollector midiCollector;
     Synthesiser synth;
+    TopoData topoData;
 };

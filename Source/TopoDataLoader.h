@@ -1,4 +1,6 @@
 // Reads CSV file and outputs a 2D integer array
+#pragma once
+
 #include <string>
 #include <vector>
 #include <fstream>
