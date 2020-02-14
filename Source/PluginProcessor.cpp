@@ -10,6 +10,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "TopoDataLoader.h"
 
 //==============================================================================
 TopoSynthAudioProcessor::TopoSynthAudioProcessor()
@@ -103,6 +104,7 @@ void TopoSynthAudioProcessor::changeProgramName (int index, const String& newNam
 //==============================================================================
 void TopoSynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    TopoDataLoader load("C:\\Users\\Tom\\Documents\\theMountain\\ImageHandler\\everest.csv");
     topoSynth.prepareToPlay(sampleRate);
 }
 
