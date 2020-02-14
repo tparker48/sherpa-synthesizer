@@ -11,6 +11,8 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "PolySynth.h"
+#include "TopoOsc.h"
 
 //==============================================================================
 /**
@@ -18,6 +20,9 @@
 class TopoSynthAudioProcessor  : public AudioProcessor
 {
 public:
+    float xRate, xScale, xPhase;
+    float yRate, yScale, yPhase;
+
     //==============================================================================
     TopoSynthAudioProcessor();
     ~TopoSynthAudioProcessor();
@@ -55,7 +60,11 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    PolySynth topoSynth;
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TopoSynthAudioProcessor)
+
+    MidiKeyboardState keyboardState;
+    TopoVoice* tempVoice;
 };
