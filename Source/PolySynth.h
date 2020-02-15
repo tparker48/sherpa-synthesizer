@@ -5,6 +5,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "TopoDataLoader.h"
+#include "TopoOscParameters.h"
 
 class PolySynth
 {
@@ -42,7 +43,7 @@ public:
      @param number : The amount of voices to be added to the PolySynth.
      */
     template<typename T1, typename T2>
-    void addVoice(int number)
+    void addVoice(int number, TopoOscParameters* topoParams)
     {
         static_assert(std::is_base_of<SynthesiserVoice, T1>::value,
                       "Second type must derive from the SynthesiserVoice class.");
@@ -50,14 +51,10 @@ public:
                              "First type must derive from the SynthesiserSound class.");
         
         for (auto i = 0; i < number; ++i)
-            synth.addVoice (new T1(&topoData));
+            synth.addVoice (new T1(&topoData, topoParams));
         
         synth.addSound (new T2());
     }
-    
-
-   
-    
     
     void clearSounds()
     {

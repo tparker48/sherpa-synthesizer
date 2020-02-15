@@ -8,7 +8,7 @@
 
 struct TopoData 
 {
-    std::vector<std::vector<int>> data;
+    std::vector<std::vector<float>> data;
     int width, height;
 };
 

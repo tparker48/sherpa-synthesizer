@@ -7,15 +7,16 @@
 void TopoVoice::startNote (int midiNoteNumber, float velocity,
                 SynthesiserSound* sound, int /*currentPitchWheelPosition*/)
 {
-    currentAngle = 0.0;
+    x = params->xPhase * (topoData->width - 1);
+    y = params->yPhase * (topoData->height - 1);
     level = velocity * 0.15;
     tailOff = 0.0;
 
-    auto cyclesPerSecond = MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-    auto cyclesPerSample = cyclesPerSecond / getSampleRate();
+    auto xCyclesPerSecond = params->xRate * MidiMessage::getMidiNoteInHertz (midiNoteNumber);
+    xDelta = xCyclesPerSecond * (params->xScale / getSampleRate());
 
-    twoPi = 2.0 * MathConstants<double>::pi;
-    angleDelta = cyclesPerSample * twoPi;
+    auto yCyclesPerSecond = params->yRate;
+    yDelta = yCyclesPerSecond * (params->yScale / getSampleRate()); // watch out, SUPER small number for low yRate
 }
 
 /**
@@ -31,26 +32,29 @@ void TopoVoice::stopNote (float /*velocity*/, bool allowTailOff)
     else
     {
         clearCurrentNote();
-        angleDelta = 0.0;
+        x = params->xPhase * (topoData->width - 1);
+        y = params->yPhase * (topoData->height - 1);
     }
 }
 
 void TopoVoice::renderNextBlock (AudioBuffer<float>& outputBuffer,
                       int startSample, int numSamples)
 {
-    if (angleDelta != 0.0)
+    if (xDelta != 0.0)
     {
         if (tailOff > 0.0)
         {
             while (--numSamples >= 0)
             {
-                auto currentSample = (float) (std::sin (currentAngle) * level * tailOff);
+                auto currentSample = getSample() * level * tailOff;
                 
                 for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                     outputBuffer.addSample (i, startSample, currentSample);
                 
-                currentAngle += angleDelta;
-                angleCap();
+                x += xDelta;
+                y += yDelta;
+                valueCapX();
+                valueCapY();
                 ++startSample;
 
                 tailOff *= 0.99;
@@ -59,7 +63,8 @@ void TopoVoice::renderNextBlock (AudioBuffer<float>& outputBuffer,
                 {
                     clearCurrentNote();
 
-                    angleDelta = 0.0;
+                    xDelta = 0.0;
+                    yDelta = 0.0;
                     break;
                 }
             }
@@ -68,23 +73,68 @@ void TopoVoice::renderNextBlock (AudioBuffer<float>& outputBuffer,
         {
             while (--numSamples >= 0)
             {
-                auto currentSample = (float) (std::sin (currentAngle) * level);
+                auto currentSample = getSample() * level;
 
                 for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                     outputBuffer.addSample (i, startSample, currentSample);
 
-                currentAngle += angleDelta;
-                angleCap();
+                x += xDelta;
+                y += yDelta;
+                valueCapX();
+                valueCapY();
                 ++startSample;
             }
         }
     }
 }
 
-void TopoVoice::angleCap()
+void TopoVoice::valueCapX()
 {
-    if (currentAngle >= twoPi)
+    if (x >= topoData->width * (params->xScale + params->xPhase))
     {
-        currentAngle -= twoPi;
+        x -= topoData->width * (params->xScale + params->xPhase);
     }
+}
+
+void TopoVoice::valueCapY()
+{
+    if (y >= topoData->height * (params->yScale + params->yPhase))
+    {
+        y -= topoData->height * (params->yScale + params->yPhase);
+    }
+}
+
+float TopoVoice::getSample()
+{
+    //return (random.nextFloat() * 0.25f - 0.125f);
+    // x and y are floats, data is indexed by integers
+    // calculate weighted average of values nearest to (x,y) 
+    if (topoData == NULL) return 0.0;
+
+    float interpolatedValue;
+    float base, up, right, upRight;
+
+    int yFloor = floor(y), yCeil = ceil(y);
+    int xFloor = floor(x), xCeil = ceil(x);
+
+    float xRatioRight   = x - xFloor;
+    float xRatioLeft    = 1.0 - xRatioRight;
+    float yRatioTop     = y - yFloor;
+    float yRatioBottom  = 1.0 - yRatioTop;
+
+    if (xCeil >= topoData->width) xCeil = floor(params->xPhase * topoData->width);
+    if (yCeil >= topoData->height) yCeil = floor(params->yPhase * topoData->height);
+
+    base    = topoData->data[xFloor][yFloor];
+    return base;
+    up      = topoData->data[xFloor][yCeil];
+    right   = topoData->data[xCeil][yFloor];
+    upRight = topoData->data[xCeil][yCeil];
+
+    interpolatedValue  = xRatioLeft * yRatioBottom * base;
+    interpolatedValue += xRatioLeft * yRatioTop * up;
+    interpolatedValue += xRatioRight * yRatioBottom * right;
+    interpolatedValue += xRatioRight * yRatioTop * upRight;
+
+    return interpolatedValue;
 }

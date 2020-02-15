@@ -31,7 +31,14 @@ TopoSynthAudioProcessor::TopoSynthAudioProcessor()
     topoSynth.clearVoices();
     topoSynth.clearSounds();
 
-    topoSynth.addVoice<TopoVoice, TopoSound>(12);
+    topoParams.xRate    = 1.0;
+    topoParams.xScale   = 1.0;
+    topoParams.xPhase   = 0.0;
+    topoParams.yRate = 0.00001;
+    topoParams.yScale = 1.0;
+    topoParams.yPhase = 1.0;
+
+    topoSynth.addVoice<TopoVoice, TopoSound>(12, &topoParams);
 }
 
 TopoSynthAudioProcessor::~TopoSynthAudioProcessor()
@@ -146,6 +153,14 @@ void TopoSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; i++)
         buffer.clear(i, 0, buffer.getNumSamples());
+
+    // WIP, NOT GENERAL ENOUGH -- Will be used to pass parameters to PolySynth.
+    for (auto i = 0; i < topoSynth.getNumVoices(); i++)
+    {
+        if ((tempVoice = dynamic_cast<TopoVoice*>(topoSynth.getVoice(i))))
+        {
+        }
+    }
 
     topoSynth.renderNextAudioBlock(buffer, 0, buffer.getNumSamples(), midiMessages);
 }

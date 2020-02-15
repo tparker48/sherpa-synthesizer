@@ -4,7 +4,7 @@ TopoDataLoader::TopoDataLoader(std::string csvName)
 {
         std::ifstream file(csvName);
         std::string line;
-        int temp;
+        float temp;
         int i = 0;
         while (std::getline(file, line))
         {
@@ -15,7 +15,7 @@ TopoDataLoader::TopoDataLoader(std::string csvName)
             {
                 std::stringstream convertor(val);
                 convertor >> temp;
-                td.data.at(i).push_back(temp);
+                td.data.at(i).push_back(temp/180.0);
             }
             i++;
         }

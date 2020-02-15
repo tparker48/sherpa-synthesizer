@@ -20,9 +20,6 @@
 class TopoSynthAudioProcessor  : public AudioProcessor
 {
 public:
-    float xRate, xScale, xPhase;
-    float yRate, yScale, yPhase;
-
     //==============================================================================
     TopoSynthAudioProcessor();
     ~TopoSynthAudioProcessor();
@@ -61,6 +58,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     PolySynth topoSynth;
+    TopoOscParameters topoParams;
+
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TopoSynthAudioProcessor)
