@@ -32,6 +32,7 @@ void TopoVoice::stopNote (float /*velocity*/, bool allowTailOff)
     else
     {
         clearCurrentNote();
+        xDelta = 0.0;
         x = params->xPhase * (topoData->width - 1);
         y = params->yPhase * (topoData->height - 1);
     }
@@ -90,17 +91,19 @@ void TopoVoice::renderNextBlock (AudioBuffer<float>& outputBuffer,
 
 void TopoVoice::valueCapX()
 {
-    if (x >= topoData->width * (params->xScale + params->xPhase))
+    if (x >= std::min( (int)(topoData->width * (params->xScale + params->xPhase)) ,topoData->width))
     {
-        x -= topoData->width * (params->xScale + params->xPhase);
+        int overflow = x - std::min((int)(topoData->width * (params->xScale + params->xPhase)), topoData->width);
+        x = (params->xPhase * topoData->width) + overflow;
     }
 }
 
 void TopoVoice::valueCapY()
 {
-    if (y >= topoData->height * (params->yScale + params->yPhase))
+    if (y >= std::min((int)(topoData->height * (params->yScale + params->yPhase)), topoData->height))
     {
-        y -= topoData->height * (params->yScale + params->yPhase);
+        int overflow = y - std::min((int)(topoData->height * (params->yScale + params->yPhase)), topoData->height);
+        y = (params->yPhase * topoData->height) + overflow;
     }
 }
 
@@ -122,11 +125,10 @@ float TopoVoice::getSample()
     float yRatioTop     = y - yFloor;
     float yRatioBottom  = 1.0 - yRatioTop;
 
-    if (xCeil >= topoData->width) xCeil = floor(params->xPhase * topoData->width);
-    if (yCeil >= topoData->height) yCeil = floor(params->yPhase * topoData->height);
+    if (xCeil >= topoData->width) xCeil = floor(params->xPhase * (topoData->width-1));
+    if (yCeil >= topoData->height) yCeil = floor(params->yPhase * (topoData->height));
 
     base    = topoData->data[xFloor][yFloor];
-    return base;
     up      = topoData->data[xFloor][yCeil];
     right   = topoData->data[xCeil][yFloor];
     upRight = topoData->data[xCeil][yCeil];

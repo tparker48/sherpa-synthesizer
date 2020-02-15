@@ -16,7 +16,8 @@
 //==============================================================================
 /**
 */
-class TopoSynthAudioProcessorEditor  : public AudioProcessorEditor
+class TopoSynthAudioProcessorEditor  : public AudioProcessorEditor,
+                                       private Slider::Listener
 {
 public:
     TopoSynthAudioProcessorEditor (TopoSynthAudioProcessor&);
@@ -27,9 +28,13 @@ public:
     void resized() override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
     TopoSynthAudioProcessor& processor;
 
+    Slider xRate, xScale, xPhase;
+    Slider yRate, yScale, yPhase;
+
+    void sliderValueChanged(Slider* slider) override;
+
+    Image img;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TopoSynthAudioProcessorEditor)
 };

@@ -31,12 +31,12 @@ TopoSynthAudioProcessor::TopoSynthAudioProcessor()
     topoSynth.clearVoices();
     topoSynth.clearSounds();
 
-    topoParams.xRate    = 1.0;
-    topoParams.xScale   = 1.0;
+    topoParams.xRate    = 700.0;
+    topoParams.xScale   = .001;
     topoParams.xPhase   = 0.0;
-    topoParams.yRate = 0.00001;
-    topoParams.yScale = 1.0;
-    topoParams.yPhase = 1.0;
+    topoParams.yRate = 150.0;
+    topoParams.yScale = 0.5;
+    topoParams.yPhase = 0.0;
 
     topoSynth.addVoice<TopoVoice, TopoSound>(12, &topoParams);
 }

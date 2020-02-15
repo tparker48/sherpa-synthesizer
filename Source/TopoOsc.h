@@ -1,6 +1,7 @@
 // stand in sine wave oscillator from FM group
 #pragma once
 
+#include <algorithm>
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "TopoDataLoader.h"
 #include "TopoOscParameters.h"

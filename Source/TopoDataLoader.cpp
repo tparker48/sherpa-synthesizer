@@ -15,7 +15,7 @@ TopoDataLoader::TopoDataLoader(std::string csvName)
             {
                 std::stringstream convertor(val);
                 convertor >> temp;
-                td.data.at(i).push_back(temp/180.0);
+                td.data.at(i).push_back((temp/127.0) - 1.0);
             }
             i++;
         }
