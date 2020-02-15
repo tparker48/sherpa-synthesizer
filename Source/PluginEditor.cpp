@@ -47,13 +47,13 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     yScale.setValue(0.5);
 
     xPhase.setSliderStyle(Slider::LinearBarVertical);
-    xPhase.setRange(0.0, 1.0, .01);
+    xPhase.setRange(0.0, 0.99, .01);
     xPhase.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     xPhase.setPopupDisplayEnabled(false, false, this);
     xPhase.setValue(0.0);
 
     yPhase.setSliderStyle(Slider::LinearBarVertical);
-    yPhase.setRange(0.0, 1.0, .01);
+    yPhase.setRange(0.0, 0.99, .01);
     yPhase.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     yPhase.setPopupDisplayEnabled(false, false, this);
     yPhase.setValue(0.0);
