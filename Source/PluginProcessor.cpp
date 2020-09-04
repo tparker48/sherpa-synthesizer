@@ -31,7 +31,6 @@ TopoSynthAudioProcessor::TopoSynthAudioProcessor()
     topoSynth.clearVoices();
     topoSynth.clearSounds();
 
-    topoParams.xRate    = 700.0;
     topoParams.xScale   = .001;
     topoParams.xPhase   = 0.0;
     topoParams.yRate = 150.0;

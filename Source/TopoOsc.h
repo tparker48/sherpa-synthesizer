@@ -25,12 +25,6 @@ public:
     { 
         this->topoData = topoData;
         params = topoParams;
-
-        auto xCyclesPerSecond = params->xRate;
-        xDelta = xCyclesPerSecond * (params->xScale / getSampleRate());
-
-        auto yCyclesPerSecond = params->yRate;
-        yDelta = yCyclesPerSecond * (params->yScale / getSampleRate());
     }
 
     bool canPlaySound(SynthesiserSound* sound) override
@@ -52,13 +46,18 @@ private:
     TopoData* topoData;
     TopoOscParameters* params;
 
+    void updateDeltas();
     void valueCapX(); // call after you increment x to avoid overflows
     void valueCapY(); // call after you increment y to avoid overflows
     float getSample();
 
+
+    float noteHz, sampleRate;
+
     float level = 1.0, tailOff = 0.0;
     float x = 0.0, xDelta = 0.0;
     float y = 0.0, yDelta = 0.0;
+    
 
     Random random;
 };

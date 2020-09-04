@@ -12,14 +12,12 @@ void TopoVoice::startNote (int midiNoteNumber, float velocity,
     level = velocity * 0.15;
     tailOff = 0.0;
 
-    auto xCyclesPerSecond = params->xRate * MidiMessage::getMidiNoteInHertz (midiNoteNumber);
-    xDelta = xCyclesPerSecond * (params->xScale / getSampleRate());
-
-    auto yCyclesPerSecond = params->yRate;
-    yDelta = yCyclesPerSecond * (params->yScale / getSampleRate()); // watch out, SUPER small number for low yRate
+    noteHz = MidiMessage::getMidiNoteInHertz (midiNoteNumber);
+    sampleRate = (float)getSampleRate();
+    updateDeltas();
 }
 
-void TopoVoice::stopNote (float /*velocity*/, bool allowTailOff)
+void TopoVoice::stopNote(float /*velocity*/, bool allowTailOff)
 {
     if (allowTailOff)
     {
@@ -35,20 +33,21 @@ void TopoVoice::stopNote (float /*velocity*/, bool allowTailOff)
     }
 }
 
-void TopoVoice::renderNextBlock (AudioBuffer<float>& outputBuffer,
-                      int startSample, int numSamples)
+void TopoVoice::renderNextBlock(AudioBuffer<float>& outputBuffer,
+    int startSample, int numSamples)
 {
     if (xDelta != 0.0)
     {
+        updateDeltas();
         if (tailOff > 0.0)
         {
             while (--numSamples >= 0)
             {
                 auto currentSample = getSample() * level * tailOff;
-                
+
                 for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
-                    outputBuffer.addSample (i, startSample, currentSample);
-                
+                    outputBuffer.addSample(i, startSample, currentSample);
+
                 x += xDelta;
                 y += yDelta;
                 valueCapX();
@@ -74,7 +73,7 @@ void TopoVoice::renderNextBlock (AudioBuffer<float>& outputBuffer,
                 auto currentSample = getSample() * level;
 
                 for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
-                    outputBuffer.addSample (i, startSample, currentSample);
+                    outputBuffer.addSample(i, startSample, currentSample);
 
                 x += xDelta;
                 y += yDelta;
@@ -84,6 +83,12 @@ void TopoVoice::renderNextBlock (AudioBuffer<float>& outputBuffer,
             }
         }
     }
+}
+
+void TopoVoice::updateDeltas()
+{
+    xDelta = (params->xScale * topoData->width) * this->noteHz / sampleRate;
+    yDelta = params->yRate * (params->yScale / sampleRate);
 }
 
 void TopoVoice::valueCapX()

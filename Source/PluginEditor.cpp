@@ -18,11 +18,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     setSize (700, 300);
     getLookAndFeel().setColour(Slider::trackColourId, Colours::white);
 
-    xRate.setSliderStyle(Slider::LinearBarVertical);
-    xRate.setRange(256, 1024, 32);
-    xRate.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
-    xRate.setPopupDisplayEnabled(false, false, this);
-    xRate.setValue(256);
 
     yRate.setSliderStyle(Slider::LinearBarVertical);
     yRate.setRange(0, 1000, 10);
@@ -70,7 +65,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     filterResonance.setValue(.3);
    
 
-    addAndMakeVisible(&xRate);
     addAndMakeVisible(&xScale);
     addAndMakeVisible(&xPhase);
     addAndMakeVisible(&yRate);
@@ -80,7 +74,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     addAndMakeVisible(&filterResonance);
 
 
-    xRate.addListener(this);
     xScale.addListener(this);
     xPhase.addListener(this);
     yRate.addListener(this);
@@ -100,9 +93,8 @@ void TopoSynthAudioProcessorEditor::sliderValueChanged(Slider* slider)
 {
     //When a slider value changes, check which slider was changed
     //and update the correct processor variable accordingly.
-    if (slider == &xRate)
-        processor.topoParams.xRate = slider->getValue();
-    else if (slider == &xScale)
+
+    if (slider == &xScale)
         processor.topoParams.xScale = slider->getValue();
     else if (slider == &xPhase)
         processor.topoParams.xPhase = slider->getValue();
@@ -131,13 +123,12 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     g.setColour(Colours::white);
 
     g.setFont(20.0f);
-    g.drawFittedText("X", x +1  , 10, spacing*3, height, Justification::centred, 1);
+    g.drawFittedText("X", x + 1  , 10, spacing*2, height, Justification::centred, 1);
     g.setFont(15.0f);
 
 
-    g.drawFittedText("Rate", x +  0 * spacing, y, width, height, Justification::centred, 1);
-    g.drawFittedText("Phase", x + 1 * spacing, y, width, height, Justification::centred, 1);
-    g.drawFittedText("Scale", x + 2 * spacing, y, width, height, Justification::centred, 1);
+    g.drawFittedText("Phase", x + 0 * spacing, y, width, height, Justification::centred, 1);
+    g.drawFittedText("Scale", x + 1 * spacing, y, width, height, Justification::centred, 1);
 
     x += 200;
 
@@ -152,7 +143,7 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     x += 200;
 
     g.setFont(20.0f);
-    g.drawFittedText("Filter", x + 1, 10, spacing * 3, height, Justification::centred, 1);
+    g.drawFittedText("Filter", x + 1, 10, spacing * 2, height, Justification::centred, 1);
     g.setFont(15.0f);
 
     g.drawFittedText("Cutoff", x + 0 * spacing, y, width, height, Justification::centred, 1);
@@ -174,14 +165,12 @@ void TopoSynthAudioProcessorEditor::resized()
     int filterLeft = yLeft + 200;
     
     // sets the position and size of the slider with arguments (x, y, width, height)
-    xRate.setBounds( xLeft + 0*spacing, xBottom, width, height);
-    xPhase.setBounds(xLeft + 1*spacing, xBottom, width, height);
-    xScale.setBounds(xLeft + 2*spacing, xBottom, width, height);
+    xPhase.setBounds(xLeft + 0*spacing, xBottom, width, height);
+    xScale.setBounds(xLeft + 1*spacing, xBottom, width, height);
 
     yRate.setBounds( yLeft + 0 * spacing, yBottom, width, height);
     yPhase.setBounds(yLeft + 1 * spacing, yBottom, width, height);
     yScale.setBounds(yLeft + 2 * spacing, yBottom, width, height);
-
 
     filterCutoff.setBounds(filterLeft + 0 * spacing, yBottom, width, height);
     filterResonance.setBounds(filterLeft + 1 * spacing, yBottom, width, height);

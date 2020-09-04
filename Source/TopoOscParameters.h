@@ -2,7 +2,7 @@
 
 struct TopoOscParameters
 {
-    float xRate, xScale, xPhase;
+    float xScale, xPhase;
     float yRate, yScale, yPhase;
     float filterCutoff, filterResonance;
 };
