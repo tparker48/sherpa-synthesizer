@@ -18,10 +18,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     setSize (700, 300);
     getLookAndFeel().setColour(Slider::trackColourId, Colours::white);
 
-    File f = File::getCurrentWorkingDirectory().getChildFile("C:\\Users\\Tom\\Documents\\theMountain\\Images\\everest.jpg");
-    img = ImageFileFormat::loadFrom(f);
-    img = img.rescaled(300, 250);
-
     xRate.setSliderStyle(Slider::LinearBarVertical);
     xRate.setRange(256, 1024, 32);
     xRate.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
@@ -58,13 +54,31 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     yPhase.setPopupDisplayEnabled(false, false, this);
     yPhase.setValue(0.0);
 
-    // this function adds the slider to the editor
+
+    filterCutoff.setSliderStyle(Slider::LinearBarVertical);
+    filterCutoff.setRange(50.0, 20000.0, 5.0);
+    filterCutoff.setSkewFactorFromMidPoint(800.0f);
+    filterCutoff.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
+    filterCutoff.setPopupDisplayEnabled(true, false, this);
+    filterCutoff.setValue(10.0);
+    
+
+    filterResonance.setSliderStyle(Slider::LinearBarVertical);
+    filterResonance.setRange(0.01, 1.0, 0.01);
+    filterResonance.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
+    filterResonance.setPopupDisplayEnabled(true, false, this);
+    filterResonance.setValue(.3);
+   
+
     addAndMakeVisible(&xRate);
     addAndMakeVisible(&xScale);
     addAndMakeVisible(&xPhase);
     addAndMakeVisible(&yRate);
     addAndMakeVisible(&yScale);
     addAndMakeVisible(&yPhase);
+    addAndMakeVisible(&filterCutoff);
+    addAndMakeVisible(&filterResonance);
+
 
     xRate.addListener(this);
     xScale.addListener(this);
@@ -72,6 +86,8 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     yRate.addListener(this);
     yScale.addListener(this);
     yPhase.addListener(this);
+    filterCutoff.addListener(this);
+    filterResonance.addListener(this);
 }
 
 TopoSynthAudioProcessorEditor::~TopoSynthAudioProcessorEditor()
@@ -96,6 +112,10 @@ void TopoSynthAudioProcessorEditor::sliderValueChanged(Slider* slider)
         processor.topoParams.yScale = slider->getValue();
     else if (slider == &yPhase)
         processor.topoParams.yPhase = slider->getValue();
+    else if (slider == &filterCutoff)
+        processor.topoParams.filterCutoff = slider->getValue();
+    else if (slider == &filterResonance)
+        processor.topoParams.filterResonance = slider->getValue();
 }
 
 void TopoSynthAudioProcessorEditor::paint (Graphics& g)
@@ -106,30 +126,38 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     int height = 20;
     int spacing = width + 1;
 
-    int visualizerX = 200;
-    int visualizerY = 30;
-    int visualizerW = img.getWidth();
-    int visualizerH = img.getHeight();
 
     g.fillAll ((Colours::darkgrey).darker(1.0));
     g.setColour(Colours::white);
 
     g.setFont(20.0f);
     g.drawFittedText("X", x +1  , 10, spacing*3, height, Justification::centred, 1);
-    g.drawFittedText("Y", x + 546 , 10, spacing*3, height, Justification::centred, 1);
+    g.setFont(15.0f);
 
-    g.setFont (15.0f);
 
     g.drawFittedText("Rate", x +  0 * spacing, y, width, height, Justification::centred, 1);
     g.drawFittedText("Phase", x + 1 * spacing, y, width, height, Justification::centred, 1);
     g.drawFittedText("Scale", x + 2 * spacing, y, width, height, Justification::centred, 1);
 
-    x += 545;
+    x += 200;
+
+    g.setFont(20.0f);
+    g.drawFittedText("Y", x + 1, 10, spacing * 3, height, Justification::centred, 1);
+    g.setFont(15.0f);
+
     g.drawFittedText("Rate", x + 0 * spacing, y, width, height, Justification::centred, 1);
     g.drawFittedText("Phase", x + 1 * spacing, y, width, height, Justification::centred, 1);
     g.drawFittedText("Scale", x + 2 * spacing, y, width, height, Justification::centred, 1);
 
-    g.drawImageAt(img, visualizerX, visualizerY);
+    x += 200;
+
+    g.setFont(20.0f);
+    g.drawFittedText("Filter", x + 1, 10, spacing * 3, height, Justification::centred, 1);
+    g.setFont(15.0f);
+
+    g.drawFittedText("Cutoff", x + 0 * spacing, y, width, height, Justification::centred, 1);
+    g.drawFittedText("Resonance", x + 1 * spacing, y, width, height, Justification::centred, 1);
+
 }
 
 void TopoSynthAudioProcessorEditor::resized()
@@ -141,7 +169,9 @@ void TopoSynthAudioProcessorEditor::resized()
     int xBottom = 40;
     int xLeft = 15;
     int yBottom = 40;
-    int yLeft = getWidth() - spacing*3 + 10;
+    int yLeft = xLeft + 200;
+
+    int filterLeft = yLeft + 200;
     
     // sets the position and size of the slider with arguments (x, y, width, height)
     xRate.setBounds( xLeft + 0*spacing, xBottom, width, height);
@@ -151,4 +181,8 @@ void TopoSynthAudioProcessorEditor::resized()
     yRate.setBounds( yLeft + 0 * spacing, yBottom, width, height);
     yPhase.setBounds(yLeft + 1 * spacing, yBottom, width, height);
     yScale.setBounds(yLeft + 2 * spacing, yBottom, width, height);
+
+
+    filterCutoff.setBounds(filterLeft + 0 * spacing, yBottom, width, height);
+    filterResonance.setBounds(filterLeft + 1 * spacing, yBottom, width, height);
 }

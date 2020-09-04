@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PolySynth.h"
 #include "TopoOsc.h"
+#include "StilsonMoogFilter.h"
 
 //==============================================================================
 /**
@@ -65,5 +66,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TopoSynthAudioProcessor)
 
     MidiKeyboardState keyboardState;
+    StilsonMoogFilter filterLeft, filterRight;
     TopoVoice* tempVoice;
 };

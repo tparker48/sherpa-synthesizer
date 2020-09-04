@@ -32,9 +32,9 @@ private:
 
     Slider xRate, xScale, xPhase;
     Slider yRate, yScale, yPhase;
+    Slider filterCutoff, filterResonance;
 
     void sliderValueChanged(Slider* slider) override;
 
-    Image img;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TopoSynthAudioProcessorEditor)
 };

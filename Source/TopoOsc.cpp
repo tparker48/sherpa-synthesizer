@@ -19,9 +19,6 @@ void TopoVoice::startNote (int midiNoteNumber, float velocity,
     yDelta = yCyclesPerSecond * (params->yScale / getSampleRate()); // watch out, SUPER small number for low yRate
 }
 
-/**
- Little decay envelope, SEE MIDI Synth tutorial.
- */
 void TopoVoice::stopNote (float /*velocity*/, bool allowTailOff)
 {
     if (allowTailOff)

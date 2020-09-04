@@ -30,7 +30,7 @@ public:
         xDelta = xCyclesPerSecond * (params->xScale / getSampleRate());
 
         auto yCyclesPerSecond = params->yRate;
-        yDelta = yCyclesPerSecond * (params->yScale / getSampleRate()); // watch out, SUPER small number for low yRate
+        yDelta = yCyclesPerSecond * (params->yScale / getSampleRate());
     }
 
     bool canPlaySound(SynthesiserSound* sound) override

@@ -111,6 +111,8 @@ void TopoSynthAudioProcessor::changeProgramName (int index, const String& newNam
 void TopoSynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     topoSynth.prepareToPlay(sampleRate);
+    filterLeft.init(sampleRate);
+    filterRight.init(sampleRate);
 }
 
 void TopoSynthAudioProcessor::releaseResources()
@@ -162,7 +164,15 @@ void TopoSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
         }
     }
 
+    filterLeft.setCutoff(topoParams.filterCutoff);
+    filterLeft.setResonance(topoParams.filterResonance);
+
+    filterRight.setCutoff(topoParams.filterCutoff);
+    filterRight.setResonance(topoParams.filterResonance);
+
     topoSynth.renderNextAudioBlock(buffer, 0, buffer.getNumSamples(), midiMessages);
+    filterLeft.processBlock(buffer,  0, LOWPASS);
+    filterRight.processBlock(buffer, 1, LOWPASS);
 }
 
 //==============================================================================

@@ -13,7 +13,7 @@ public:
     
     PolySynth(MidiKeyboardState& keyState) : keyboardState(keyState) 
     {
-        TopoDataLoader load("C:\\Users\\Tom\\Documents\\theMountain\\ImageHandler\\everest.csv");
+        TopoDataLoader load("C:\\Users\\Tom\\Documents\\JUCE Projects\\theMountain\\ImageHandler\\everest.csv");
         this->topoData = load.getData();
     }
     
