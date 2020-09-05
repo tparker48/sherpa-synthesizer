@@ -38,6 +38,7 @@ void TopoVoice::renderNextBlock(AudioBuffer<float>& outputBuffer,
 {
     if (xDelta != 0.0)
     {
+        checkSourceSwitch();
         updateDeltas();
         if (tailOff > 0.0)
         {
@@ -48,10 +49,7 @@ void TopoVoice::renderNextBlock(AudioBuffer<float>& outputBuffer,
                 for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                     outputBuffer.addSample(i, startSample, currentSample);
 
-                x += xDelta;
-                y += yDelta;
-                valueCapX();
-                valueCapY();
+                incrementPhase();
                 ++startSample;
 
                 tailOff *= 0.99;
@@ -75,13 +73,20 @@ void TopoVoice::renderNextBlock(AudioBuffer<float>& outputBuffer,
                 for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                     outputBuffer.addSample(i, startSample, currentSample);
 
-                x += xDelta;
-                y += yDelta;
-                valueCapX();
-                valueCapY();
+                incrementPhase();         
                 ++startSample;
             }
         }
+    }
+}
+
+void TopoVoice::checkSourceSwitch()
+{
+    if (topoData != *topoDataSelection)
+    {
+        topoData = *topoDataSelection;
+        x = 0;
+        y = 0;
     }
 }
 
@@ -89,6 +94,14 @@ void TopoVoice::updateDeltas()
 {
     xDelta = (params->xScale * topoData->width) * this->noteHz / sampleRate;
     yDelta = params->yRate * (params->yScale / sampleRate);
+}
+
+void TopoVoice::incrementPhase()
+{
+    x += xDelta;
+    y += yDelta;
+    valueCapX();
+    valueCapY();
 }
 
 void TopoVoice::valueCapX()
@@ -102,18 +115,17 @@ void TopoVoice::valueCapX()
 
 void TopoVoice::valueCapY()
 {
-    if (y >= std::min((int)(topoData->height * (params->yScale + params->yPhase)), topoData->height))
+    int maxLegalVal = std::min((int)(topoData->height * (params->yScale + params->yPhase)), topoData->height);
+    int overflow = y - maxLegalVal;
+
+    if (overflow > 0)
     {
-        int overflow = y - std::min((int)(topoData->height * (params->yScale + params->yPhase)), topoData->height);
         y = (params->yPhase * topoData->height) + overflow;
     }
 }
 
 float TopoVoice::getSample()
 {
-    //return (random.nextFloat() * 0.25f - 0.125f);
-    // x and y are floats, data is indexed by integers
-    // calculate weighted average of values nearest to (x,y) 
     if (topoData == NULL) return 0.0;
 
     float interpolatedValue;

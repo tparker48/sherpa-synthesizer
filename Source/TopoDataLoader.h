@@ -9,7 +9,7 @@
 struct TopoData 
 {
     std::vector<std::vector<float>> data;
-    int width, height;
+    int width = 0, height = 0;
 };
 
 class TopoDataLoader

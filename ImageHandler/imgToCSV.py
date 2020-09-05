@@ -5,8 +5,11 @@ import numpy as np
 import csv
 from PIL import Image
 
-pic = (Image.open("../Images/everest.jpg")).convert("L") # converted to greyscale
-file = open('everest.csv', 'w')
+pathToImage = "../Images/theLongDark.jpg"
+csvFileName = 'theLongDark.csv'
+
+pic = (Image.open(pathToImage)).convert("L") # converted to greyscale
+file = open(csvFileName, 'w')
 dataWrite = csv.writer(file, lineterminator = '\n')
 data = np.array(pic.getdata()).reshape(pic.size[0], pic.size[1], 1)
 

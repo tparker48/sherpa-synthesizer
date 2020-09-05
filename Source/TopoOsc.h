@@ -21,9 +21,10 @@ class TopoVoice : public SynthesiserVoice
 public:
 
     TopoVoice() { topoData = NULL; params = NULL; }
-    TopoVoice(TopoData* topoData, TopoOscParameters* topoParams) 
+    TopoVoice(TopoData** topoData, TopoOscParameters* topoParams) 
     { 
-        this->topoData = topoData;
+        this->topoDataSelection = topoData;
+        this->topoData = *topoDataSelection;
         params = topoParams;
     }
 
@@ -43,10 +44,13 @@ public:
     void renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 
 private:
+    TopoData** topoDataSelection;
     TopoData* topoData;
     TopoOscParameters* params;
-
+    
+    void checkSourceSwitch();
     void updateDeltas();
+    void incrementPhase();
     void valueCapX(); // call after you increment x to avoid overflows
     void valueCapY(); // call after you increment y to avoid overflows
     float getSample();

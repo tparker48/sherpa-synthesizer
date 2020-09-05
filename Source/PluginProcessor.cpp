@@ -27,7 +27,6 @@ TopoSynthAudioProcessor::TopoSynthAudioProcessor()
     : topoSynth(keyboardState)
 #endif
 {
-
     topoSynth.clearVoices();
     topoSynth.clearSounds();
 
@@ -155,13 +154,6 @@ void TopoSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; i++)
         buffer.clear(i, 0, buffer.getNumSamples());
 
-    // WIP, NOT GENERAL ENOUGH -- Will be used to pass parameters to PolySynth.
-    for (auto i = 0; i < topoSynth.getNumVoices(); i++)
-    {
-        if ((tempVoice = dynamic_cast<TopoVoice*>(topoSynth.getVoice(i))))
-        {
-        }
-    }
 
     filterLeft.setCutoff(topoParams.filterCutoff);
     filterLeft.setResonance(topoParams.filterResonance);

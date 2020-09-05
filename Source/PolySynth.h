@@ -6,6 +6,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "TopoDataLoader.h"
 #include "TopoOscParameters.h"
+#include "SourceChanger.h"
+
+#include <string>
 
 class PolySynth
 {
@@ -13,14 +16,29 @@ public:
     
     PolySynth(MidiKeyboardState& keyState) : keyboardState(keyState) 
     {
-        TopoDataLoader load("C:\\Users\\Tom\\Documents\\JUCE Projects\\theMountain\\ImageHandler\\everest.csv");
-        this->topoData = load.getData();
+        TopoDataLoader t(path + csvNames[0]);
+        topoDataChoices[0] = t.getData();
+        topoData = &topoDataChoices[0];
     }
     
     ~PolySynth()
     {
         synth.clearSounds();
         synth.clearVoices();
+    }
+
+    void changeTopoSource(int choice)
+    {
+        if (choice >= 4) return;
+
+        if (topoDataChoices[choice].width == 0 || topoDataChoices[choice].height == 0)
+        {
+            loadedSelection = choice;
+            sourceChanger.changeSource(path + csvNames[choice], &topoDataChoices[choice], &loadingIsDone);
+        }
+        else {
+            topoData = &topoDataChoices[choice];
+        }
     }
 
     int getNumVoices() const noexcept
@@ -88,11 +106,26 @@ public:
 
         synth.renderNextBlock (outputBuffer, incomingMidi,
                                startSample, numSamples);
+
+        if (loadingIsDone) {
+            topoData = &topoDataChoices[loadedSelection];
+            loadingIsDone = false;
+            sourceChanger.stop();
+        }
     }
     
 private:
     MidiKeyboardState& keyboardState;
     MidiMessageCollector midiCollector;
     Synthesiser synth;
-    TopoData topoData;
+
+    std::string path = ABS_PATH;
+    std::string csvNames[4] = { EVEREST, IRON, SADDLE, LONGDARK };
+
+    TopoData topoDataChoices[4];
+    TopoData* topoData;
+
+    SourceChanger sourceChanger;
+    bool loadingIsDone = false;
+    int loadedSelection;
 };
