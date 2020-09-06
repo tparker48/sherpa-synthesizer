@@ -1,10 +1,12 @@
 // Reads CSV file and outputs a 2D integer array
 #pragma once
 
+#include "../JuceLibraryCode/JuceHeader.h"
 #include <string>
 #include <vector>
 #include <fstream>
 #include <sstream>
+
 
 struct TopoData 
 {

@@ -87,9 +87,9 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     sourceSelect.onChange = [this] { sourceChanged(); };
     sourceSelect.setSelectedId(1);
     
-    Image normalButton = ImageCache::getFromMemory(BinaryData::button_OFF_png, 4096);
-    Image overButton = ImageCache::getFromMemory(BinaryData::button_OFF_png, 4096);
-    Image downButton = ImageCache::getFromMemory(BinaryData::button_ON_png, 4096);
+    Image normalButton = ImageCache::getFromMemory(BinaryData::button_OFF_png, BinaryData::button_OFF_pngSize);
+    Image overButton = ImageCache::getFromMemory(BinaryData::button_OFF_png, BinaryData::button_OFF_pngSize);
+    Image downButton = ImageCache::getFromMemory(BinaryData::button_ON_png, BinaryData::button_ON_pngSize);
 
     addAndMakeVisible(xScaleFull);
     xScaleFull.setImages(false, false, true, normalButton, 1.0f, {}, overButton, 1.0f, {}, downButton, 1.0f, {});
@@ -161,8 +161,9 @@ void TopoSynthAudioProcessorEditor::updateToggleState(int mode)
 
 void TopoSynthAudioProcessorEditor::paint (Graphics& g)
 {
-    int x = 0;
+    int x = 1;
     int y = getHeight() - 25;
+    int yTop = 100;
     int width = 50;
     int height = 20;
     int spacing = width + 1;
@@ -174,12 +175,10 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     sourceSelect.setEnabled(!processor.topoParams.sourceLoading);
 
     g.setFont(15.0f);
-    g.drawFittedText("Wave Source Selection", 15 , 15, 3*width, height, Justification::centred, 1);
-
-    height += 200;
+    g.drawFittedText("Wave Source Selection", (getWidth()-150)/2 , 15, 150, height, Justification::centred, 1);
 
     g.setFont(20.0f);
-    g.drawFittedText("X", x , 10, spacing*2, height, Justification::centred, 1);
+    g.drawFittedText("X", x , yTop, spacing*2, height, Justification::centred, 1);
     g.setFont(15.0f);
 
 
@@ -189,7 +188,7 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     x += 200;
 
     g.setFont(20.0f);
-    g.drawFittedText("Y", x, 10, spacing * 3, height, Justification::centred, 1);
+    g.drawFittedText("Y", x, yTop, spacing * 3, height, Justification::centred, 1);
     g.setFont(15.0f);
 
     g.drawFittedText("Rate", x + 0 * spacing, y, width, height, Justification::centred, 1);
@@ -199,7 +198,7 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     x += 200;
 
     g.setFont(20.0f);
-    g.drawFittedText("Filter", x, 10, spacing * 2, height, Justification::centred, 1);
+    g.drawFittedText("Filter", x, yTop, spacing * 2, height, Justification::centred, 1);
     g.setFont(15.0f);
 
     g.drawFittedText("Cutoff", x, y, width, height, Justification::centred, 1);
@@ -219,7 +218,7 @@ void TopoSynthAudioProcessorEditor::resized()
 
     int spacing = 50;
 
-    int xBottom = getHeight() - sliderHeight - 15;
+    int xBottom = getHeight() - sliderHeight - 35;
     int yBottom = xBottom;
 
     int xLeft = 15;
@@ -242,5 +241,5 @@ void TopoSynthAudioProcessorEditor::resized()
     filterResonance.setBounds(filterLeft + 1 * spacing, yBottom, sliderWidth, sliderHeight);
 
 
-    sourceSelect.setBounds(25, 40, sourceSelectWidth, sourceSelectHeight);
+    sourceSelect.setBounds((getWidth() - sourceSelectWidth)/2, 40, sourceSelectWidth, sourceSelectHeight);
 }
