@@ -9,7 +9,7 @@ void TopoVoice::startNote (int midiNoteNumber, float velocity,
 {
     x = params->xPhase * (topoData->width - 1);
     y = params->yPhase * (topoData->height - 1);
-    level = velocity * 0.15;
+    level = velocity * 0.1;
     tailOff = 0.0;
 
     noteHz = MidiMessage::getMidiNoteInHertz (midiNoteNumber);
@@ -128,29 +128,37 @@ float TopoVoice::getSample()
 {
     if (topoData == NULL) return 0.0;
 
-    float interpolatedValue;
-    float base, up, right, upRight;
+    int xRounded = round(x);
+    int yRounded = round(y);
 
-    int yFloor = floor(y), yCeil = ceil(y);
-    int xFloor = floor(x), xCeil = ceil(x);
+    if (xRounded >= topoData->width) xRounded = floor(params->xPhase * (topoData->width-1));
+    if (yRounded >= topoData->height) yRounded = floor(params->yPhase * (topoData->height-1));
 
-    float xRatioRight   = x - xFloor;
-    float xRatioLeft    = 1.0 - xRatioRight;
-    float yRatioTop     = y - yFloor;
-    float yRatioBottom  = 1.0 - yRatioTop;
+    return topoData->data[xRounded][yRounded];
 
-    if (xCeil >= topoData->width) xCeil = floor(params->xPhase * (topoData->width-1));
-    if (yCeil >= topoData->height) yCeil = floor(params->yPhase * (topoData->height));
-
-    base    = topoData->data[xFloor][yFloor];
-    up      = topoData->data[xFloor][yCeil];
-    right   = topoData->data[xCeil][yFloor];
-    upRight = topoData->data[xCeil][yCeil];
-
-    interpolatedValue  = xRatioLeft * yRatioBottom * base;
-    interpolatedValue += xRatioLeft * yRatioTop * up;
-    interpolatedValue += xRatioRight * yRatioBottom * right;
-    interpolatedValue += xRatioRight * yRatioTop * upRight;
-
-    return interpolatedValue;
+    //float interpolatedValue;
+    //float base, up, right, upRight;
+    //
+    //int yFloor = floor(y), yCeil = ceil(y);
+    //int xFloor = floor(x), xCeil = ceil(x);
+    //
+    //float xRatioRight   = x - xFloor;
+    //float xRatioLeft    = 1.0 - xRatioRight;
+    //float yRatioTop     = y - yFloor;
+    //float yRatioBottom  = 1.0 - yRatioTop;
+    //
+    //if (xCeil >= topoData->width) xCeil = floor(params->xPhase * (topoData->width-1));
+    //if (yCeil >= topoData->height) yCeil = floor(params->yPhase * (topoData->height-1));
+    //
+    //base    = topoData->data[xFloor][yFloor];
+    //up      = topoData->data[xFloor][yCeil];
+    //right   = topoData->data[xCeil][yFloor];
+    //upRight = topoData->data[xCeil][yCeil];
+    //
+    //interpolatedValue  = xRatioLeft * yRatioBottom * base;
+    //interpolatedValue += xRatioLeft * yRatioTop * up;
+    //interpolatedValue += xRatioRight * yRatioBottom * right;
+    //interpolatedValue += xRatioRight * yRatioTop * upRight;
+    //
+    //return interpolatedValue;
 }
