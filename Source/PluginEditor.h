@@ -23,7 +23,6 @@ public:
     TopoSynthAudioProcessorEditor (TopoSynthAudioProcessor&);
     ~TopoSynthAudioProcessorEditor();
 
-    //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
 

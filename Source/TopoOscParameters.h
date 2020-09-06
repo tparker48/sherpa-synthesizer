@@ -19,5 +19,5 @@ struct TopoOscParameters
     float filterCutoff, filterResonance;
 
     int sourceSelection;
-    
+    bool sourceLoading = false;
 };

@@ -6,38 +6,34 @@
 
 class SourceChanger {
 public:
-	void changeSource(std::string fileName, TopoData* data, bool* done);
+	void changeSource(std::string fileName, TopoData* data, bool* stillWorking);
 	void stop();
 
 private:
 
 	class DataLoaderThread: public Thread {
 	public:
-		DataLoaderThread(std::string fileName, TopoData* data, bool* done) : Thread("Loading...") 
+		DataLoaderThread(std::string fileName, TopoData* data, bool* stillWorking) : Thread("Loading...")
 		{ 
 			this->fileName = fileName;
 			dataPtr = data;
-			this->done = done;
+			this->stillWorking = stillWorking;
 		}
 
 		void run() override
 		{
 			TopoDataLoader t(fileName);
 			*dataPtr = t.getData();
-			*done = true;
-
-			while (!threadShouldExit())
-			{
-				sleep(15);
-			}
+			*stillWorking = false;
 		}
 
 	private:
 		std::string fileName;
 		TopoData* dataPtr;
-		bool* done;
+		bool* stillWorking;
 	};
 
 	DataLoaderThread* dataLoaderThread;
+	bool threadExists = false;
 
 };

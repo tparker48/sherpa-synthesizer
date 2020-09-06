@@ -22,9 +22,9 @@ TopoSynthAudioProcessor::TopoSynthAudioProcessor()
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                        ),
-                       topoSynth(keyboardState)
+                       topoSynth(keyboardState, &topoParams)
 #else 
-    : topoSynth(keyboardState)
+    : topoSynth(keyboardState, &topoParams)
 #endif
 {
     topoSynth.clearVoices();
@@ -164,6 +164,8 @@ void TopoSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     topoSynth.renderNextAudioBlock(buffer, 0, buffer.getNumSamples(), midiMessages);
     filterLeft.processBlock(buffer,  0, LOWPASS);
     filterRight.processBlock(buffer, 1, LOWPASS);
+
+
 }
 
 //==============================================================================

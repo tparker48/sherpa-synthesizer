@@ -15,8 +15,13 @@
 TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
-    setSize (700, 300);
+    setSize (700, 400);
     getLookAndFeel().setColour(Slider::trackColourId, Colours::white);
+    getLookAndFeel().setColour(PopupMenu::ColourIds::backgroundColourId, (Colours::darkgrey).darker(1.0));
+    getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, (Colours::darkgrey));
+    getLookAndFeel().setColour(PopupMenu::ColourIds::textColourId, (Colours::white));
+    sourceSelect.setColour(ComboBox::ColourIds::backgroundColourId, (Colours::darkgrey).darker(1.0));
+    sourceSelect.setColour(ComboBox::ColourIds::textColourId, (Colours::white));
 
     xScaleModes[X_SCALE_FULL] = 1.0f;
     xScaleModes[X_SCALE_MEDIUM] = 0.5f;
@@ -81,7 +86,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     sourceSelect.addItem("The Long Dark", 4);
     sourceSelect.onChange = [this] { sourceChanged(); };
     sourceSelect.setSelectedId(1);
-
     
     Image normalButton = ImageCache::getFromMemory(BinaryData::button_OFF_png, 4096);
     Image overButton = ImageCache::getFromMemory(BinaryData::button_OFF_png, 4096);
@@ -167,8 +171,15 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     g.fillAll ((Colours::darkgrey).darker(1.0));
     g.setColour(Colours::white);
 
+    sourceSelect.setEnabled(!processor.topoParams.sourceLoading);
+
+    g.setFont(15.0f);
+    g.drawFittedText("Wave Source Selection", 15 , 15, 3*width, height, Justification::centred, 1);
+
+    height += 200;
+
     g.setFont(20.0f);
-    g.drawFittedText("X", x + 1  , 10, spacing*2, height, Justification::centred, 1);
+    g.drawFittedText("X", x , 10, spacing*2, height, Justification::centred, 1);
     g.setFont(15.0f);
 
 
@@ -178,7 +189,7 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     x += 200;
 
     g.setFont(20.0f);
-    g.drawFittedText("Y", x + 1, 10, spacing * 3, height, Justification::centred, 1);
+    g.drawFittedText("Y", x, 10, spacing * 3, height, Justification::centred, 1);
     g.setFont(15.0f);
 
     g.drawFittedText("Rate", x + 0 * spacing, y, width, height, Justification::centred, 1);
@@ -188,45 +199,48 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     x += 200;
 
     g.setFont(20.0f);
-    g.drawFittedText("Filter", x + 1, 10, spacing * 2, height, Justification::centred, 1);
+    g.drawFittedText("Filter", x, 10, spacing * 2, height, Justification::centred, 1);
     g.setFont(15.0f);
 
-    g.drawFittedText("Cutoff", x + 0 * spacing, y, width, height, Justification::centred, 1);
+    g.drawFittedText("Cutoff", x, y, width, height, Justification::centred, 1);
     g.drawFittedText("Resonance", x + 1 * spacing, y, width, height, Justification::centred, 1);
 
 }
 
 void TopoSynthAudioProcessorEditor::resized()
 {
-    int width = 25;
-    int height = getHeight() - 70;
+    int sliderWidth = 25;
+    int sliderHeight = getHeight() - 170;
+
+    int sourceSelectWidth = 125;
+    int sourceSelectHeight = 25;
 
     int sizeButton = 25;
 
-    int spacing = width + 25;
+    int spacing = 50;
 
-    int xBottom = 40;
+    int xBottom = getHeight() - sliderHeight - 15;
+    int yBottom = xBottom;
+
     int xLeft = 15;
-    int yBottom = 40;
     int yLeft = xLeft + 200;
-
     int filterLeft = yLeft + 200;
     
-    // sets the position and size of the slider with arguments (x, y, width, height)
-    xPhase.setBounds(xLeft + 0*spacing, xBottom, width, height);
-    xScale.setBounds(xLeft + 1*spacing, xBottom, width, height);
+    xPhase.setBounds(xLeft + 0*spacing, xBottom, sliderWidth, sliderHeight);
+    xScale.setBounds(xLeft + 1*spacing, xBottom, sliderWidth, sliderHeight);
 
     
     xScaleFull.setBounds(  xLeft + 2 * spacing, xBottom,       sizeButton, sizeButton);
     xScaleMedium.setBounds(xLeft + 2 * spacing, xBottom + 50,  sizeButton, sizeButton);
     xScaleSmall.setBounds( xLeft + 2 * spacing, xBottom + 100, sizeButton, sizeButton);
 
-    yRate.setBounds( yLeft + 0 * spacing, yBottom, width, height);
-    yPhase.setBounds(yLeft + 1 * spacing, yBottom, width, height);
-    yScale.setBounds(yLeft + 2 * spacing, yBottom, width, height);
+    yRate.setBounds( yLeft + 0 * spacing, yBottom, sliderWidth, sliderHeight);
+    yPhase.setBounds(yLeft + 1 * spacing, yBottom, sliderWidth, sliderHeight);
+    yScale.setBounds(yLeft + 2 * spacing, yBottom, sliderWidth, sliderHeight);
 
-    filterCutoff.setBounds(   filterLeft + 0 * spacing, yBottom, width, height);
-    filterResonance.setBounds(filterLeft + 1 * spacing, yBottom, width, height);
+    filterCutoff.setBounds(   filterLeft + 0 * spacing, yBottom, sliderWidth, sliderHeight);
+    filterResonance.setBounds(filterLeft + 1 * spacing, yBottom, sliderWidth, sliderHeight);
 
-    sourceSelect.setBounds(filterLeft + 2 * spacing, yBottom, 50, 25);
+
+    sourceSelect.setBounds(25, 40, sourceSelectWidth, sourceSelectHeight);
 }

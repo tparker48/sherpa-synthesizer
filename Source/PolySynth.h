@@ -14,11 +14,13 @@ class PolySynth
 {
 public:
     
-    PolySynth(MidiKeyboardState& keyState) : keyboardState(keyState) 
+    PolySynth(MidiKeyboardState& keyState, TopoOscParameters* topoParams) : keyboardState(keyState) 
     {
+        this->topoParams = topoParams;
         TopoDataLoader t(path + csvNames[0]);
         topoDataChoices[0] = t.getData();
         topoData = &topoDataChoices[0];
+        loadedSelection = 0;
     }
     
     ~PolySynth()
@@ -34,10 +36,11 @@ public:
         if (topoDataChoices[choice].width == 0 || topoDataChoices[choice].height == 0)
         {
             loadedSelection = choice;
-            sourceChanger.changeSource(path + csvNames[choice], &topoDataChoices[choice], &loadingIsDone);
+            topoParams->sourceLoading = true;
+            sourceChanger.changeSource(path + csvNames[choice], &topoDataChoices[choice], &(topoParams->sourceLoading));
         }
         else {
-            topoData = &topoDataChoices[choice];
+            loadedSelection = choice;
         }
     }
 
@@ -50,16 +53,8 @@ public:
     {
         return synth.getVoice(index);
     }
-    
-    /**
-     @brief Add a certain number of voices to the PolySynth.
-     
-     @param T1 : A class that derives from the SynthesiserVoice class (provided by JUCE).
-     
-     @param  T2 : A class that derives from the SynthesiserSound class (provided by JUCE).
-     
-     @param number : The amount of voices to be added to the PolySynth.
-     */
+
+
     template<typename T1, typename T2>
     void addVoice(int number, TopoOscParameters* topoParams)
     {
@@ -107,9 +102,8 @@ public:
         synth.renderNextBlock (outputBuffer, incomingMidi,
                                startSample, numSamples);
 
-        if (loadingIsDone) {
+        if (!topoParams->sourceLoading) {
             topoData = &topoDataChoices[loadedSelection];
-            loadingIsDone = false;
             sourceChanger.stop();
         }
     }
@@ -118,6 +112,7 @@ private:
     MidiKeyboardState& keyboardState;
     MidiMessageCollector midiCollector;
     Synthesiser synth;
+    TopoOscParameters* topoParams;
 
     std::string path = ABS_PATH;
     std::string csvNames[4] = { EVEREST, IRON, SADDLE, LONGDARK };
@@ -126,6 +121,5 @@ private:
     TopoData* topoData;
 
     SourceChanger sourceChanger;
-    bool loadingIsDone = false;
     int loadedSelection;
 };
