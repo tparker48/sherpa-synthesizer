@@ -21,10 +21,8 @@ public:
         {
             TopoDataLoader t(i);
             topoDataChoices[i] = t.getData();
-            topoData = &topoDataChoices[i];
-            loadedSelection = i;
         }
-        
+        topoData = &topoDataChoices[EVEREST];
     }
     
     ~PolySynth()
@@ -36,7 +34,7 @@ public:
     void changeTopoSource(int choice)
     {
         if (choice >= 4) return;
-        loadedSelection = choice;
+        topoData = &topoDataChoices[choice];
     }
 
     int getNumVoices() const noexcept

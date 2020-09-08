@@ -112,15 +112,14 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     xScaleFull.onClick = [this] { updateToggleState(X_SCALE_FULL);   };
     xScaleFull.setRadioGroupId(1001);
     xScaleFull.setClickingTogglesState(true);
-    xScaleFull.setToggleState(true, false);
     xScaleFull.setLookAndFeel(customButton);
+    xScaleFull.setToggleState(true, NotificationType::dontSendNotification);
 
     // Medium
     addAndMakeVisible(&xScaleMedium);
     xScaleMedium.onClick = [this] { updateToggleState(X_SCALE_MEDIUM);   };
     xScaleMedium.setRadioGroupId(1001);
     xScaleMedium.setClickingTogglesState(true);
-    xScaleMedium.setToggleState(false, false);
     xScaleMedium.setLookAndFeel(customButton);
 
     //Small
@@ -128,7 +127,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     xScaleSmall.onClick = [this] { updateToggleState(X_SCALE_SMALL);   };
     xScaleSmall.setRadioGroupId(1001);
     xScaleSmall.setClickingTogglesState(true);
-    xScaleSmall.setToggleState(false, false);
     xScaleSmall.setLookAndFeel(customButton);
 
     // Y Phase
@@ -288,7 +286,6 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     // label text
     g.setFont(fontLabel);
     
-    int labelPadding = 0;// getHeight() * .0025;
 
     Component* c;
 
@@ -392,7 +389,6 @@ void TopoSynthAudioProcessorEditor::resized()
     int sliderW = largeSectionW * .2;
     int sliderH = sectionH * .75;
     int sliderXPadding = largeSectionW * .075;
-    int sliderYPadding = (sectionH - sliderH);
 
     int largeDialSize = smallSectionW * .5;
     int smallDialSize = largeDialSize * .75;
