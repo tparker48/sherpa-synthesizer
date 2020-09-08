@@ -12,7 +12,7 @@ void TopoVoice::startNote (int midiNoteNumber, float velocity,
     level = velocity * 0.1;
     tailOff = 0.0;
 
-    noteHz = MidiMessage::getMidiNoteInHertz (midiNoteNumber);
+    noteHz = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
     sampleRate = (float)getSampleRate();
     updateDeltas();
 }
@@ -44,7 +44,7 @@ void TopoVoice::renderNextBlock(AudioBuffer<float>& outputBuffer,
         {
             while (--numSamples >= 0)
             {
-                auto currentSample = getSample() * level * tailOff;
+                auto currentSample = getSample() * level * params->gain * tailOff;
 
                 for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                     outputBuffer.addSample(i, startSample, currentSample);
@@ -68,7 +68,7 @@ void TopoVoice::renderNextBlock(AudioBuffer<float>& outputBuffer,
         {
             while (--numSamples >= 0)
             {
-                auto currentSample = getSample() * level;
+                auto currentSample = getSample() * level * params->gain;
 
                 for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                     outputBuffer.addSample(i, startSample, currentSample);
@@ -92,7 +92,8 @@ void TopoVoice::checkSourceSwitch()
 
 void TopoVoice::updateDeltas()
 {
-    xDelta = (params->xScale * topoData->width) * this->noteHz / sampleRate;
+    float hz = this->noteHz * (1.0 - params->xTuning);
+    xDelta = (params->xScale * topoData->width) * hz / sampleRate;
     yDelta = params->yRate * (params->yScale / sampleRate);
 }
 

@@ -26,7 +26,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     Yellow = Colour(252, 191, 73);
     Green = Colour(95, 198, 148);
 
-    xScaleModes[X_SCALE_FULL] = 1.0f;
+    xScaleModes[X_SCALE_FULL] = .8f;
     xScaleModes[X_SCALE_MEDIUM] = 0.5f;
     xScaleModes[X_SCALE_SMALL] = 0.2f;
     processor.topoParams.xScaleMode = X_SCALE_FULL;
@@ -231,28 +231,28 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     g.fillAll(Grey);
 
     float x = divisionW;
-
+    float y = divisionH;
 
     g.setColour(Red);
-    g.fillRect(x, divisionH , smallSectionW, sectionH);
+    g.fillRect(x, y , smallSectionW, sectionH);
 
     x += divisionW + smallSectionW ;
 
 
     g.setColour(Orange);
-    g.fillRect(x, divisionH, largeSectionW, sectionH);
+    g.fillRect(x, y, largeSectionW, sectionH);
 
     x += divisionW + largeSectionW;
 
 
     g.setColour(Yellow);
-    g.fillRect(x, divisionH, largeSectionW, sectionH);
+    g.fillRect(x, y, largeSectionW, sectionH);
 
     x += divisionW + largeSectionW;
 
 
     g.setColour(Green);
-    g.fillRect(x, divisionH, smallSectionW, sectionH);
+    g.fillRect(x, y, smallSectionW, sectionH);
 
     // Square off edges of the comboBox
     g.setColour(Grey);
@@ -261,6 +261,122 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     // Adjust state of sourceSelect
     // IDEA : pass pointer to processor so it can call this in a snappy fashion!
     sourceSelect.setEnabled(!processor.topoParams.sourceLoading);
+
+    
+    // Text
+    g.setColour(Grey);
+
+    float fontHeader = getWidth() * 0.025;
+    float fontLabel = getWidth() * 0.0175;
+    
+    int textW = getWidth() * 0.1;
+    int textH = getHeight() * 0.1;
+
+    int headerY = y + sectionH * .05 - textH / 2;
+
+    // Pannel text
+    g.setFont(fontHeader);
+
+    x = divisionW;
+    g.drawFittedText("signal", x + smallSectionW/2 - textW/2, headerY , textW, textH, Justification::centred, 1);
+
+    x += smallSectionW + divisionW;
+    g.drawFittedText("x", x + largeSectionW / 2 - textW / 2, headerY, textW, textH, Justification::centred, 1);
+
+    x += largeSectionW + divisionW;
+    g.drawFittedText("y", x + largeSectionW / 2 - textW / 2, headerY, textW, textH, Justification::centred, 1);
+
+    x += largeSectionW + divisionW;
+    g.drawFittedText("filter", x + smallSectionW / 2 - textW / 2, headerY, textW, textH, Justification::centred, 1);
+
+    // label text
+    g.setFont(fontLabel);
+    
+    int labelPadding = 0;// getHeight() * .0025;
+
+    Component* c;
+
+    // source
+    c = &sourceSelect;
+    x = c->getX() + (c->getWidth()/2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("source",x , y, textW, textH, Justification::centred, 1);
+
+    // gain
+    c = &gain;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("gain", x, y, textW, textH, Justification::centred, 1);
+
+
+    // x phase
+    c = &xPhase;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("phase", x, y, textW, textH, Justification::centred, 1);
+
+    // x scale
+    c = &xScale;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("scale", x, y, textW, textH, Justification::centred, 1);
+
+    // x scale range
+    int buttonLabelPaddingFactor = 0.03 * getHeight();
+
+    c = &xScaleFull;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    //y = c->getBottom();
+    g.drawFittedText("scale_range", x, y, textW, textH, Justification::centred, 1);
+
+    c = &xScaleFull;
+    y = c->getBottom() - buttonLabelPaddingFactor;
+    g.drawFittedText("---", x, y, textW, textH, Justification::centred, 1);
+
+    c = &xScaleMedium;
+    y = c->getBottom() - buttonLabelPaddingFactor;
+    g.drawFittedText("--", x, y, textW, textH, Justification::centred, 1);
+
+    c = &xScaleSmall;
+    y = c->getBottom() - buttonLabelPaddingFactor;
+    g.drawFittedText("-", x, y, textW, textH, Justification::centred, 1);
+
+    // x detune
+    c = &xTuning;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("detune", x, y, textW, textH, Justification::centred, 1);
+
+    // y phase
+    c = &yPhase;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("phase", x, y, textW, textH, Justification::centred, 1);
+
+    //// y rate
+    c = &yRate;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("rate", x, y, textW, textH, Justification::centred, 1);
+
+    //// y scale
+    c = &yScale;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("scale", x, y, textW, textH, Justification::centred, 1);
+
+    // cutoff
+    c = &filterCutoff;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("cutoff", x, y, textW, textH, Justification::centred, 1);
+
+    // resonance
+    c = &filterResonance;
+    x = c->getX() + (c->getWidth() / 2) - textW / 2;
+    y = c->getBottom();
+    g.drawFittedText("resonance", x, y, textW, textH, Justification::centred, 1);
+
 
 }
 
@@ -312,13 +428,13 @@ void TopoSynthAudioProcessorEditor::resized()
 
     int xScaleRightEdge = (xScalePadding + sliderW);
     int xTuningXPadding = xScaleRightEdge + ((largeSectionW - xScaleRightEdge) - smallDialSize) / 2.0;
-    int xTuningYPadding = sectionH * .2;
+    int xTuningYPadding = sectionH * .15;
     xTuning.setBounds(x + xTuningXPadding, y + xTuningYPadding, smallDialSize, smallDialSize);
 
     int buttonSize = largeSectionW * .12;
     int xButtonXPadding = xScaleRightEdge + ((largeSectionW - xScaleRightEdge) - buttonSize) / 2.0;
-    int xButtonYPadding = sectionH * .5;
-    int xButtonYSpacing = buttonSize * 1.75;
+    int xButtonYPadding = sectionH * .46;
+    int xButtonYSpacing = buttonSize * 2.0;
 
     xScaleFull.setBounds(x + xButtonXPadding,   y + xButtonYPadding + 0*xButtonYSpacing, buttonSize, buttonSize);
     xScaleMedium.setBounds(x + xButtonXPadding, y + xButtonYPadding + 1*xButtonYSpacing, buttonSize, buttonSize);
@@ -362,7 +478,7 @@ void TopoSynthAudioProcessorEditor::sliderValueChanged(Slider* slider)
     else if (slider == &xPhase)
         processor.topoParams.xPhase = slider->getValue();
     else if (slider == &xTuning)
-        processor.topoParams.xTuning = (slider->getValue()*2.0f) - 1.0f;
+        processor.topoParams.xTuning = -((slider->getValue()*.5f) - 0.25f);
     else if (slider == &yRate)
         processor.topoParams.yRate = slider->getValue();
     else if (slider == &yScale)
@@ -372,7 +488,7 @@ void TopoSynthAudioProcessorEditor::sliderValueChanged(Slider* slider)
     else if (slider == &filterCutoff)
         processor.topoParams.filterCutoff = 50.0f + (slider->getValue() * 19950.0f);
     else if (slider == &filterResonance)
-        processor.topoParams.filterResonance = (slider->getValue() * .94f) + .1f;
+        processor.topoParams.filterResonance = (slider->getValue() * .87f) + .05f;
 }
 
 void TopoSynthAudioProcessorEditor::sourceChanged()
