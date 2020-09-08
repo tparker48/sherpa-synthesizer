@@ -6,7 +6,6 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "TopoDataLoader.h"
 #include "TopoOscParameters.h"
-#include "SourceChanger.h"
 
 #include <string>
 
@@ -17,10 +16,15 @@ public:
     PolySynth(MidiKeyboardState& keyState, TopoOscParameters* topoParams) : keyboardState(keyState) 
     {
         this->topoParams = topoParams;
-        TopoDataLoader t(path + csvNames[0]);
-        topoDataChoices[0] = t.getData();
-        topoData = &topoDataChoices[0];
-        loadedSelection = 0;
+
+        for (int i = 0; i < 4; i++)
+        {
+            TopoDataLoader t(i);
+            topoDataChoices[i] = t.getData();
+            topoData = &topoDataChoices[i];
+            loadedSelection = i;
+        }
+        
     }
     
     ~PolySynth()
@@ -32,16 +36,7 @@ public:
     void changeTopoSource(int choice)
     {
         if (choice >= 4) return;
-
-        if (topoDataChoices[choice].width == 0 || topoDataChoices[choice].height == 0)
-        {
-            loadedSelection = choice;
-            topoParams->sourceLoading = true;
-            sourceChanger.changeSource(path + csvNames[choice], &topoDataChoices[choice], &(topoParams->sourceLoading));
-        }
-        else {
-            loadedSelection = choice;
-        }
+        loadedSelection = choice;
     }
 
     int getNumVoices() const noexcept
@@ -101,11 +96,6 @@ public:
 
         synth.renderNextBlock (outputBuffer, incomingMidi,
                                startSample, numSamples);
-
-        if (!topoParams->sourceLoading) {
-            topoData = &topoDataChoices[loadedSelection];
-            sourceChanger.stop();
-        }
     }
     
 private:
@@ -114,12 +104,8 @@ private:
     Synthesiser synth;
     TopoOscParameters* topoParams;
 
-    std::string path = ABS_PATH;
-    std::string csvNames[4] = { EVEREST, IRON, SADDLE, LONGDARK };
-
     TopoData topoDataChoices[4];
     TopoData* topoData;
 
-    SourceChanger sourceChanger;
     int loadedSelection;
 };

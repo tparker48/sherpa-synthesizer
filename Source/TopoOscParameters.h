@@ -4,12 +4,11 @@
 #define X_SCALE_MEDIUM 1
 #define X_SCALE_SMALL 2
 
-#define ABS_PATH "C:\\Users\\Tom\\Documents\\JUCE Projects\\theMountain\\ImageHandler\\"
+#define EVEREST 0
+#define IRON 1
+#define SOUTH 2
+#define LONGDARK 3
 
-#define EVEREST  "everest.csv"
-#define IRON     "ironMountain.csv"
-#define SADDLE   "southSaddle.csv"
-#define LONGDARK "theLongDark.csv"
 
 struct TopoOscParameters
 {

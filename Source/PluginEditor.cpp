@@ -258,10 +258,6 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     g.setColour(Grey);
     g.fillRect(comboX, comboY, comboW, comboH);
 
-    // Adjust state of sourceSelect
-    // IDEA : pass pointer to processor so it can call this in a snappy fashion!
-    sourceSelect.setEnabled(!processor.topoParams.sourceLoading);
-
     
     // Text
     g.setColour(Grey);
@@ -472,7 +468,7 @@ void TopoSynthAudioProcessorEditor::sliderValueChanged(Slider* slider)
     //and update the correct processor variable accordingly.
 
     if (slider == &gain)
-        processor.topoParams.gain = slider->getValue();
+        processor.topoParams.gain = (slider->getValue()) * 1.25;
     else if (slider == &xScale)
         processor.topoParams.xScale = slider->getValue() * xScaleModes[processor.topoParams.xScaleMode];
     else if (slider == &xPhase)

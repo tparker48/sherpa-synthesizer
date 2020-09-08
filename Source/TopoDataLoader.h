@@ -2,6 +2,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "TopoOscParameters.h"
 #include <string>
 #include <vector>
 #include <fstream>
@@ -18,7 +19,7 @@ class TopoDataLoader
 {
 public:
 
-    TopoDataLoader(std::string csvName);
+    TopoDataLoader(int choice);
 
     TopoData getData();
 private:

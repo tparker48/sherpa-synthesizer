@@ -1,27 +1,46 @@
 #include "TopoDataLoader.h"
 
-TopoDataLoader::TopoDataLoader(std::string csvName)
+TopoDataLoader::TopoDataLoader(int choice)
 {
-        std::ifstream file(csvName);
-        std::string line;
-        float temp;
-        int i = 0;
-        while (std::getline(file, line))
-        {
-            td.data.push_back({});
-            std::stringstream iss(line);
-            std::string val;
-            while (std::getline(iss, val, ','))
-            {
-                std::stringstream convertor(val);
-                convertor >> temp;
-                td.data.at(i).push_back((temp/127.0) - 1.0);
-            }
-            i++;
-        }
+    Image image;
 
-        td.width = td.data.size();
-        td.height = (td.data[0]).size();
+    switch (choice)
+    {
+    case EVEREST:
+        image = ImageCache::getFromMemory(BinaryData::everest_jpg, BinaryData::everest_jpgSize);
+        break;
+
+    case IRON:
+        image = ImageCache::getFromMemory(BinaryData::ironMountain_jpg, BinaryData::ironMountain_jpgSize);
+        break;
+
+    case SOUTH:
+        image = ImageCache::getFromMemory(BinaryData::southSaddle_jpg, BinaryData::southSaddle_jpgSize);
+        break;
+
+    case LONGDARK:
+        image = ImageCache::getFromMemory(BinaryData::theLongDark_jpg, BinaryData::theLongDark_jpgSize);
+        break;
+    }
+
+
+    int w = image.getWidth();
+    int h = image.getHeight();
+
+    td.data.resize(w);
+    for (int x = 0; x < w; x++)
+    {
+        td.data[x].resize(h);
+
+
+        for (int y = 0; y < h; y++)
+        {
+            td.data[x][y] = 2.0f * (image.getPixelAt(x, y).getBrightness()) - 1.0f;
+        }
+    }
+
+    td.width = w;
+    td.height = h;
 }
 
 TopoData TopoDataLoader::getData()

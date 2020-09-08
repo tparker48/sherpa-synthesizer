@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
-
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
@@ -164,8 +154,7 @@ void TopoSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     topoSynth.renderNextAudioBlock(buffer, 0, buffer.getNumSamples(), midiMessages);
     filterLeft.processBlock(buffer,  0, LOWPASS);
     filterRight.processBlock(buffer, 1, LOWPASS);
-
-
+  
 }
 
 //==============================================================================
