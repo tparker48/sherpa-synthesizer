@@ -13,11 +13,15 @@
 
 struct TopoOscParameters
 {
-    int xScaleMode;
-    float xScale, xPhase;
-    float yRate, yScale, yPhase;
-    float filterCutoff, filterResonance;
-
     int sourceSelection;
     bool sourceLoading = false;
+
+    float gain;
+
+    float xScale, xPhase, xTuning;
+
+    int xScaleMode;
+    
+    float yRate, yScale, yPhase;
+    float filterCutoff, filterResonance;
 };
