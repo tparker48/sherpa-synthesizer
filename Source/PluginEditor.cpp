@@ -26,9 +26,9 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     Yellow = Colour(252, 191, 73);
     Green = Colour(95, 198, 148);
 
-    xScaleModes[X_SCALE_FULL] = .8f;
-    xScaleModes[X_SCALE_MEDIUM] = 0.5f;
-    xScaleModes[X_SCALE_SMALL] = 0.2f;
+    xScaleModes[X_SCALE_FULL] = .5f;
+    xScaleModes[X_SCALE_MEDIUM] = 0.25f;
+    xScaleModes[X_SCALE_SMALL] = 0.1f;
     processor.topoParams.xScaleMode = X_SCALE_FULL;
 
     divisionWidthRatio = 0.014;
@@ -466,7 +466,7 @@ void TopoSynthAudioProcessorEditor::sliderValueChanged(Slider* slider)
     if (slider == &gain)
         processor.topoParams.gain = (slider->getValue()) * 1.25;
     else if (slider == &xScale)
-        processor.topoParams.xScale = slider->getValue() * xScaleModes[processor.topoParams.xScaleMode];
+        processor.topoParams.xScale = .1f + slider->getValue() * xScaleModes[processor.topoParams.xScaleMode];
     else if (slider == &xPhase)
         processor.topoParams.xPhase = slider->getValue();
     else if (slider == &xTuning)
@@ -492,5 +492,5 @@ void TopoSynthAudioProcessorEditor::sourceChanged()
 void TopoSynthAudioProcessorEditor::updateToggleState(int mode)
 {
     processor.topoParams.xScaleMode = mode;
-    processor.topoParams.xScale = xScale.getValue() * xScaleModes[processor.topoParams.xScaleMode];
+    processor.topoParams.xScale = .1f +  xScale.getValue() * xScaleModes[processor.topoParams.xScaleMode];
 }
