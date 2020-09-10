@@ -135,7 +135,7 @@ float TopoVoice::getSample()
     if (xRounded >= topoData->width) xRounded = floor(params->xPhase * (topoData->width-1));
     if (yRounded >= topoData->height) yRounded = floor(params->yPhase * (topoData->height-1));
     
-    return topoData->data[xRounded][yRounded];
+    //return topoData->data[xRounded][yRounded];
 
     int yFloor = floor(y);
     int yCeil = ceil(y);
@@ -147,7 +147,7 @@ float TopoVoice::getSample()
     }
     int yInterp = topoData->data[xRounded][yFloor] *(1.0f - ratio) + topoData->data[xRounded][yCeil] * (ratio);
 
-    
+    return yInterp;
 
     //float interpolatedValue;
     //float base, up, right, upRight;
