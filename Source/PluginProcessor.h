@@ -52,10 +52,15 @@ public:
     TopoOscParameters topoParams;
 
 private:
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TopoSynthAudioProcessor)
+    float getCutoff();
+    float getResonance();
 
     MidiKeyboardState keyboardState;
     StilsonMoogFilter filterLeft, filterRight;
     TopoVoice* tempVoice;
+
+    AudioProcessorValueTreeState vts;
+    AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TopoSynthAudioProcessor)
 };

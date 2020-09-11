@@ -6,6 +6,9 @@
 #include "UI/DialLookAndFeel.h"
 #include "UI/ButtonLookAndFeel.h"
 
+typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+typedef juce::AudioProcessorValueTreeState::ComboBoxAttachment ComboBoxAttachment;
+
 //==============================================================================
 /**
 */
@@ -13,7 +16,7 @@ class TopoSynthAudioProcessorEditor  : public AudioProcessorEditor,
                                        private Slider::Listener
 {
 public:
-    TopoSynthAudioProcessorEditor(TopoSynthAudioProcessor&);
+    TopoSynthAudioProcessorEditor(TopoSynthAudioProcessor&, AudioProcessorValueTreeState&);
     ~TopoSynthAudioProcessorEditor();
 
     //==============================================================================
@@ -24,15 +27,18 @@ private:
     void sliderValueChanged(Slider* slider) override;
     void sourceChanged();
     void updateToggleState(int mode);
+    void buttonStateChanged();
+    void refreshTopoParams();
     
     TopoSynthAudioProcessor& processor;
+    AudioProcessorValueTreeState& vts;
 
     Colour Grey, Red, Orange, Yellow, Green;
     
-    ComboBox sourceSelect;
+    ComboBox sourceSelect, buttonState;
 
     Slider gain;
-    Slider  xTuning, xScale, xPhase;
+    Slider xTuning, xScale, xPhase;
     Slider yRate, yScale, yPhase;
     Slider filterCutoff, filterResonance;
 
@@ -53,6 +59,12 @@ private:
     const float filterResonanceSensitivity = 0.04;
     const float widthMax = 1600.0;
 
+    
+    std::unique_ptr<ComboBoxAttachment> sourceSelectionP, buttonStateP;
+    std::unique_ptr<SliderAttachment> gainP, xPhaseP, xScaleP, xTuningP, yRateP, yScaleP, yPhaseP,
+                                        filterCutoffP, filterResonanceP;
+
+   
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TopoSynthAudioProcessorEditor)
 };

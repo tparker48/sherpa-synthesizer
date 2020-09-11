@@ -2,8 +2,8 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProcessor& p, AudioProcessorValueTreeState& valTreeState)
+    : AudioProcessorEditor (&p), processor (p), vts(valTreeState)
 {
     double ratio = 7.0 / 3.5;
     setResizeLimits(400, 400 / ratio, 1600, 1600 / ratio);
@@ -15,11 +15,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     Orange = Colour(247, 127, 0);
     Yellow = Colour(252, 191, 73);
     Green = Colour(95, 198, 148);
-
-    xScaleModes[X_SCALE_FULL] = .5f;
-    xScaleModes[X_SCALE_MEDIUM] = 0.25f;
-    xScaleModes[X_SCALE_SMALL] = 0.1f;
-    processor.topoParams.xScaleMode = X_SCALE_FULL;
 
     divisionWidthRatio = 0.014;
     divisionHeightRatio = 0.028;
@@ -49,48 +44,55 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     sourceSelect.addItem("Iron Mountain", 2);
     sourceSelect.addItem("South Saddle", 3);
     sourceSelect.addItem("The Long Dark", 4);
-    sourceSelect.setSelectedId(1);
     sourceSelect.onChange = [this] { sourceChanged(); };
+    sourceSelectionP.reset(new ComboBoxAttachment(vts, "sourceSelection", sourceSelect));
+    
+
     sourceSelect.setColour(ComboBox::ColourIds::backgroundColourId, Grey);
     sourceSelect.setColour(ComboBox::ColourIds::textColourId, (Colours::white));
     sourceSelect.setColour(ComboBox::ColourIds::outlineColourId, Grey);
 
+    addAndMakeVisible(buttonState);
+    buttonState.addItem("small", 1);
+    buttonState.addItem("medium", 2);
+    buttonState.addItem("full", 3);
+    buttonState.onChange = [this] {buttonStateChanged(); };
+    buttonStateP.reset(new ComboBoxAttachment(vts, "xScaleRange", buttonState));
+
+
+
     // Gain Knob
     addAndMakeVisible(&gain);
     gain.setSliderStyle(Slider::LinearBarVertical);
-    gain.setRange(0.0, 1.0, .001);
+    gainP.reset(new SliderAttachment(vts, "gain", gain));
     gain.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     gain.setPopupDisplayEnabled(false, false, this);
-    gain.setValue(.75);
     gain.setLookAndFeel(customDial);
     gain.setVelocityBasedMode(true);
 
 
     // X Phase Slider
     addAndMakeVisible(&xPhase);
+    xPhaseP.reset(new SliderAttachment(vts, "xPhase", xPhase));
     xPhase.setSliderStyle(Slider::LinearBarVertical);
-    xPhase.setRange(0.0, .99, 0.01);
     xPhase.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     xPhase.setPopupDisplayEnabled(false, false, this);
-    xPhase.setValue(.5);
     xPhase.setLookAndFeel(customSlider);
 
     // X Scale Slider
     addAndMakeVisible(&xScale);
+    xScaleP.reset(new SliderAttachment(vts, "xScale", xScale));
     xScale.setSliderStyle(Slider::LinearBarVertical);
-    xScale.setRange(0.01, 1.0, 0.01);
     xScale.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     xScale.setPopupDisplayEnabled(false, false, this);
-    xScale.setValue(.5);
     xScale.setLookAndFeel(customSlider);
 
     // X Tuning Dial
     addAndMakeVisible(&xTuning);
+    xTuningP.reset(new SliderAttachment(vts, "xTuning", xTuning));
     xTuning.setSliderStyle(Slider::LinearBarVertical);
-    xTuning.setRange(0.0, 1.0, .001);
     xTuning.setTextBoxStyle(Slider::NoTextBox, false, 70, 30);
     xTuning.setPopupDisplayEnabled(false, false, this);
-    xTuning.setValue(0.5);
     xTuning.setLookAndFeel(customDial);
     xTuning.setVelocityBasedMode(true);
     xTuning.setDoubleClickReturnValue(true, 0.5);
@@ -103,7 +105,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     xScaleFull.setRadioGroupId(1001);
     xScaleFull.setClickingTogglesState(true);
     xScaleFull.setLookAndFeel(customButton);
-    xScaleFull.setToggleState(true, NotificationType::dontSendNotification);
 
     // Medium
     addAndMakeVisible(&xScaleMedium);
@@ -121,50 +122,43 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
 
     // Y Phase
     addAndMakeVisible(&yPhase);
+    yPhaseP.reset(new SliderAttachment(vts, "yPhase", yPhase));
     yPhase.setSliderStyle(Slider::LinearBarVertical);
-    yPhase.setRange(0.0, 0.99, 0.01);
     yPhase.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     yPhase.setPopupDisplayEnabled(false, false, this);
-    yPhase.setValue(.5);
     yPhase.setLookAndFeel(customSlider);
 
     // Y Rate
     addAndMakeVisible(&yRate);
+    yRateP.reset(new SliderAttachment(vts, "yRate", yRate));
     yRate.setSliderStyle(Slider::LinearBarVertical);
-    yRate.setRange(0.0, 750.0, .5);
-    yRate.setSkewFactorFromMidPoint(250.0f);
     yRate.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     yRate.setPopupDisplayEnabled(false, false, this);
-    yRate.setValue(200);
     yRate.setLookAndFeel(customSlider);
 
     // Y Scale
     addAndMakeVisible(&yScale);
+    yScaleP.reset(new SliderAttachment(vts, "yScale", yScale));
     yScale.setSliderStyle(Slider::LinearBarVertical);
-    yScale.setRange(0.0, 1.0, 0.01);
     yScale.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     yScale.setPopupDisplayEnabled(false, false, this);
-    yScale.setValue(.5);
     yScale.setLookAndFeel(customSlider);
 
     // Filter Cutoff
     addAndMakeVisible(&filterCutoff);
+    filterCutoffP.reset(new SliderAttachment(vts, "filterCutoff", filterCutoff));
     filterCutoff.setSliderStyle(Slider::LinearBarVertical);
-    filterCutoff.setRange(0.0, 1.0, 0.001);
-    filterCutoff.setSkewFactorFromMidPoint(.2f);
     filterCutoff.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     filterCutoff.setPopupDisplayEnabled(false, false, this);
-    filterCutoff.setValue(0.4);
     filterCutoff.setLookAndFeel(customDial);
     filterCutoff.setVelocityBasedMode(true);
 
     // Filter Resonance
     addAndMakeVisible(&filterResonance);
+    filterResonanceP.reset(new SliderAttachment(vts, "filterResonance", filterResonance));
     filterResonance.setSliderStyle(Slider::LinearBarVertical);
-    filterResonance.setRange(0.0, 1.0, 0.001);
     filterResonance.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     filterResonance.setPopupDisplayEnabled(false, false, this);
-    filterResonance.setValue(.3);
     filterResonance.setLookAndFeel(customDial);
     filterResonance.setVelocityBasedMode(true);
 
@@ -174,19 +168,18 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     filterCutoff.setVelocityModeParameters(1.0, 0, filterCutoffSensitivity, false);
     filterResonance.setVelocityModeParameters(1.0, 0, filterResonanceSensitivity, false);
 
-    gain.addListener(this);
-     
-    xScale.addListener(this);
-    xPhase.addListener(this);
-    xTuning.addListener(this);
-
-    yRate.addListener(this);
-    yScale.addListener(this);
-    yPhase.addListener(this);
-
-    filterCutoff.addListener(this);
-    filterResonance.addListener(this);
-
+    //gain.addListener(this);
+    // 
+    //xScale.addListener(this);
+    //xPhase.addListener(this);
+    //xTuning.addListener(this);
+    //
+    //yRate.addListener(this);
+    //yScale.addListener(this);
+    //yPhase.addListener(this);
+    //
+    //filterCutoff.addListener(this);
+    //filterResonance.addListener(this);
 
     resized();
 }
@@ -450,27 +443,27 @@ void TopoSynthAudioProcessorEditor::resized()
 
 void TopoSynthAudioProcessorEditor::sliderValueChanged(Slider* slider)
 {
-    //When a slider value changes, check which slider was changed
-    //and update the correct processor variable accordingly.
-
-    if (slider == &gain)
-        processor.topoParams.gain = (slider->getValue()) * 1.25;
-    else if (slider == &xScale)
-        processor.topoParams.xScale = .1f + slider->getValue() * xScaleModes[processor.topoParams.xScaleMode];
-    else if (slider == &xPhase)
-        processor.topoParams.xPhase = slider->getValue();
-    else if (slider == &xTuning)
-        processor.topoParams.xTuning = -((slider->getValue()*.5f) - 0.25f);
-    else if (slider == &yRate)
-        processor.topoParams.yRate = slider->getValue();
-    else if (slider == &yScale)
-        processor.topoParams.yScale = slider->getValue();
-    else if (slider == &yPhase)
-        processor.topoParams.yPhase = slider->getValue();
-    else if (slider == &filterCutoff)
-        processor.topoParams.filterCutoff = 50.0f + (slider->getValue() * 19950.0f);
-    else if (slider == &filterResonance)
-        processor.topoParams.filterResonance = (slider->getValue() * .87f) + .05f;
+//    //When a slider value changes, check which slider was changed
+//    //and update the correct processor variable accordingly.
+//
+//    if (slider == &gain)
+//        processor.topoParams.gain = (slider->getValue());
+//    else if (slider == &xScale)
+//        processor.topoParams.xScale = .1f + slider->getValue() * xScaleModes[processor.topoParams.xScaleMode];
+//    else if (slider == &xPhase)
+//        processor.topoParams.xPhase = slider->getValue();
+//    else if (slider == &xTuning)
+//        processor.topoParams.xTuning = -((slider->getValue()*.5f) - 0.25f);
+//    else if (slider == &yRate)
+//        processor.topoParams.yRate = slider->getValue();
+//    else if (slider == &yScale)
+//        processor.topoParams.yScale = slider->getValue();
+//    else if (slider == &yPhase)
+//        processor.topoParams.yPhase = slider->getValue();
+//    else if (slider == &filterCutoff)
+//        processor.topoParams.filterCutoff = slider->getValue();
+//    else if (slider == &filterResonance)
+//        processor.topoParams.filterResonance = (slider->getValue() * .87f) + .05f;
 }
 
 void TopoSynthAudioProcessorEditor::sourceChanged()
@@ -481,6 +474,13 @@ void TopoSynthAudioProcessorEditor::sourceChanged()
 
 void TopoSynthAudioProcessorEditor::updateToggleState(int mode)
 {
-    processor.topoParams.xScaleMode = mode;
-    processor.topoParams.xScale = .1f +  xScale.getValue() * xScaleModes[processor.topoParams.xScaleMode];
+    buttonState.setSelectedId(mode);
+}
+
+void TopoSynthAudioProcessorEditor::buttonStateChanged()
+{
+    int active = buttonState.getSelectedId();
+    xScaleFull.setToggleState( active == 3 , NotificationType::dontSendNotification);
+    xScaleMedium.setToggleState(active == 2, NotificationType::dontSendNotification);
+    xScaleSmall.setToggleState(active == 1, NotificationType::dontSendNotification);
 }
