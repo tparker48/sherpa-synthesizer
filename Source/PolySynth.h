@@ -17,7 +17,7 @@ public:
     {
         this->topoParams = topoParams;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < NUM_SOURCES; i++)
         {
             TopoDataLoader t(i);
             topoDataChoices[i] = t.getData();
@@ -33,7 +33,7 @@ public:
 
     void changeTopoSource(int choice)
     {
-        if (choice >= 4) return;
+        if (choice >= NUM_SOURCES) return;
         topoData = &topoDataChoices[choice];
     }
 
@@ -102,7 +102,7 @@ private:
     Synthesiser synth;
     TopoOscParameters* topoParams;
 
-    TopoData topoDataChoices[4];
+    TopoData topoDataChoices[NUM_SOURCES];
     TopoData* topoData;
 
     int loadedSelection;

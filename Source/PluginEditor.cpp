@@ -30,37 +30,20 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, (Colours::darkgrey));
     getLookAndFeel().setColour(PopupMenu::ColourIds::textColourId, (Colours::white));
     getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedTextColourId, (Colours::white));
-
+    sourceSelect.setColour(ComboBox::ColourIds::backgroundColourId, Grey);
+    sourceSelect.setColour(ComboBox::ColourIds::textColourId, (Colours::white));
+    sourceSelect.setColour(ComboBox::ColourIds::outlineColourId, Grey);
     
-
-    //xScaleModes[X_SCALE_FULL] = 1.0f;
-    //xScaleModes[X_SCALE_MEDIUM] = 0.5f;
-    //xScaleModes[X_SCALE_SMALL] = 0.2f;
-    //processor.topoParams.xScaleMode = X_SCALE_FULL;
-
     // Source Select Combo Box
     addAndMakeVisible(sourceSelect);
     sourceSelect.addItem("Everest", 1);
     sourceSelect.addItem("Iron Mountain", 2);
     sourceSelect.addItem("South Saddle", 3);
-    sourceSelect.addItem("The Long Dark", 4);
+    sourceSelect.addItem("Cascade", 4);
+    sourceSelect.addItem("The Long Dark", 5);
     sourceSelect.onChange = [this] { sourceChanged(); };
     sourceSelectionP.reset(new ComboBoxAttachment(vts, "sourceSelection", sourceSelect));
     
-
-    sourceSelect.setColour(ComboBox::ColourIds::backgroundColourId, Grey);
-    sourceSelect.setColour(ComboBox::ColourIds::textColourId, (Colours::white));
-    sourceSelect.setColour(ComboBox::ColourIds::outlineColourId, Grey);
-
-    addAndMakeVisible(buttonState);
-    buttonState.addItem("small", 1);
-    buttonState.addItem("medium", 2);
-    buttonState.addItem("full", 3);
-    buttonState.onChange = [this] {buttonStateChanged(); };
-    buttonStateP.reset(new ComboBoxAttachment(vts, "xScaleRange", buttonState));
-
-
-
     // Gain Knob
     addAndMakeVisible(&gain);
     gain.setSliderStyle(Slider::LinearBarVertical);
@@ -99,6 +82,13 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
 
 
     // X Scale Buttons
+    addAndMakeVisible(buttonState);
+    buttonState.addItem("small", 1);
+    buttonState.addItem("medium", 2);
+    buttonState.addItem("full", 3);
+    buttonState.onChange = [this] {buttonStateChanged(); };
+    buttonStateP.reset(new ComboBoxAttachment(vts, "xScaleRange", buttonState));
+
     // Full
     addAndMakeVisible(&xScaleFull);
     xScaleFull.onClick = [this] { updateToggleState(X_SCALE_FULL);   };
@@ -167,19 +157,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     xTuning.setVelocityModeParameters(1.0, 0, xTuningSensitivity, false);
     filterCutoff.setVelocityModeParameters(1.0, 0, filterCutoffSensitivity, false);
     filterResonance.setVelocityModeParameters(1.0, 0, filterResonanceSensitivity, false);
-
-    //gain.addListener(this);
-    // 
-    //xScale.addListener(this);
-    //xPhase.addListener(this);
-    //xTuning.addListener(this);
-    //
-    //yRate.addListener(this);
-    //yScale.addListener(this);
-    //yPhase.addListener(this);
-    //
-    //filterCutoff.addListener(this);
-    //filterResonance.addListener(this);
 
     resized();
 }
@@ -439,32 +416,6 @@ void TopoSynthAudioProcessorEditor::resized()
     filterResonance.setBounds(x + resonanceXPadding, y + resonanceYPadding, smallDialSize, smallDialSize);
 }
 
-
-
-void TopoSynthAudioProcessorEditor::sliderValueChanged(Slider* slider)
-{
-//    //When a slider value changes, check which slider was changed
-//    //and update the correct processor variable accordingly.
-//
-//    if (slider == &gain)
-//        processor.topoParams.gain = (slider->getValue());
-//    else if (slider == &xScale)
-//        processor.topoParams.xScale = .1f + slider->getValue() * xScaleModes[processor.topoParams.xScaleMode];
-//    else if (slider == &xPhase)
-//        processor.topoParams.xPhase = slider->getValue();
-//    else if (slider == &xTuning)
-//        processor.topoParams.xTuning = -((slider->getValue()*.5f) - 0.25f);
-//    else if (slider == &yRate)
-//        processor.topoParams.yRate = slider->getValue();
-//    else if (slider == &yScale)
-//        processor.topoParams.yScale = slider->getValue();
-//    else if (slider == &yPhase)
-//        processor.topoParams.yPhase = slider->getValue();
-//    else if (slider == &filterCutoff)
-//        processor.topoParams.filterCutoff = slider->getValue();
-//    else if (slider == &filterResonance)
-//        processor.topoParams.filterResonance = (slider->getValue() * .87f) + .05f;
-}
 
 void TopoSynthAudioProcessorEditor::sourceChanged()
 {

@@ -12,8 +12,7 @@ typedef juce::AudioProcessorValueTreeState::ComboBoxAttachment ComboBoxAttachmen
 //==============================================================================
 /**
 */
-class TopoSynthAudioProcessorEditor  : public AudioProcessorEditor,
-                                       private Slider::Listener
+class TopoSynthAudioProcessorEditor  : public AudioProcessorEditor
 {
 public:
     TopoSynthAudioProcessorEditor(TopoSynthAudioProcessor&, AudioProcessorValueTreeState&);
@@ -24,11 +23,9 @@ public:
     void resized() override;
 
 private:
-    void sliderValueChanged(Slider* slider) override;
     void sourceChanged();
     void updateToggleState(int mode);
     void buttonStateChanged();
-    void refreshTopoParams();
     
     TopoSynthAudioProcessor& processor;
     AudioProcessorValueTreeState& vts;

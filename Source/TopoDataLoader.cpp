@@ -21,8 +21,11 @@ TopoDataLoader::TopoDataLoader(int choice)
     case LONGDARK:
         image = ImageCache::getFromMemory(BinaryData::theLongDark_jpg, BinaryData::theLongDark_jpgSize);
         break;
-    }
 
+    case CASCADES:
+        image = ImageCache::getFromMemory(BinaryData::cascade_jpg, BinaryData::cascade_jpgSize);
+        break;
+    }
 
     int w = image.getWidth();
     int h = image.getHeight();

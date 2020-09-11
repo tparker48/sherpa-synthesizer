@@ -1,10 +1,6 @@
 #include "TopoOsc.h"
 
 
-
-/**
- This is where we set up all the parameters needed when a note is pressed.
- */
 void TopoVoice::startNote (int midiNoteNumber, float velocity,
                 SynthesiserSound* sound, int /*currentPitchWheelPosition*/)
 {

@@ -8,7 +8,10 @@
 #define EVEREST 0
 #define IRON 1
 #define SOUTH 2
-#define LONGDARK 3
+#define CASCADES 3
+#define LONGDARK 4
+
+#define NUM_SOURCES 5
 
 
 struct TopoOscParameters

@@ -1,7 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-//==============================================================================
 TopoSynthAudioProcessor::TopoSynthAudioProcessor()
     : AudioProcessor(BusesProperties().withOutput("Output", AudioChannelSet::stereo(), true)), topoSynth(keyboardState, &topoParams),
       vts(*this, nullptr, "parameters", createParameterLayout())
@@ -17,7 +16,6 @@ TopoSynthAudioProcessor::~TopoSynthAudioProcessor()
 {
 }
 
-//==============================================================================
 const String TopoSynthAudioProcessor::getName() const
 {
     return JucePlugin_Name;
@@ -67,7 +65,7 @@ void TopoSynthAudioProcessor::changeProgramName (int index, const String& newNam
 {
 }
 
-//==============================================================================
+
 void TopoSynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     topoSynth.prepareToPlay(sampleRate);
@@ -119,7 +117,6 @@ void TopoSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
   
 }
 
-//==============================================================================
 bool TopoSynthAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
@@ -130,7 +127,7 @@ AudioProcessorEditor* TopoSynthAudioProcessor::createEditor()
     return new TopoSynthAudioProcessorEditor (*this, vts);
 }
 
-//==============================================================================
+
 void TopoSynthAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
     auto state = vts.copyState();
@@ -147,8 +144,7 @@ void TopoSynthAudioProcessor::setStateInformation (const void* data, int sizeInB
             vts.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
 
-//==============================================================================
-// This creates new instances of the plugin..
+
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new TopoSynthAudioProcessor();
@@ -163,7 +159,7 @@ AudioProcessorValueTreeState::ParameterLayout TopoSynthAudioProcessor::createPar
 
     std::vector<std::unique_ptr<RangedAudioParameter>> params;
 
-    auto sourceSelection = std::make_unique<AudioParameterFloat>("sourceSelection", "Source", 1.0, 4.0, 1.0);
+    auto sourceSelection = std::make_unique<AudioParameterFloat>("sourceSelection", "Source", 1.0, NUM_SOURCES, 1.0);
 
     auto gain = std::make_unique<AudioParameterFloat>("gain", "Gain",
         NormalisableRange<float>(0.0f, 1.25f, 0.01f), 1.0f);
