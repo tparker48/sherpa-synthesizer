@@ -1,4 +1,4 @@
-# The Mountain - Topographic Synthesizer
+# sherpa - topographic synthesizer
 
 The mountain is a VST that generates unique wave forms from topographic data. Built using the JUCE framework.
 
