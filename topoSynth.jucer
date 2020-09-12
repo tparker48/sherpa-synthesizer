@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ah3bnU" name="true sound - sherpa" projectType="audioplug"
+<JUCERPROJECT id="ah3bnU" name="true noise - sherpa" projectType="audioplug"
               jucerVersion="5.4.7" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              pluginFormats="buildAU,buildVST3" pluginManufacturer="Tom Parker"
-              companyName="True Sound" pluginName="sherpa" pluginDesc="true sound - sherpa">
-  <MAINGROUP id="AWFTiX" name="true sound - sherpa">
+              pluginFormats="buildAAX,buildAU,buildVST,buildVST3" pluginManufacturer="true noise"
+              companyName="True Noise" pluginName="sherpa" pluginDesc="topographic synthesizer">
+  <MAINGROUP id="AWFTiX" name="true noise - sherpa">
     <FILE id="sAOnNN" name="everest.jpg" compile="0" resource="1" file="Images/everest.jpg"/>
     <FILE id="BWPQ7y" name="ironMountain.jpg" compile="0" resource="1"
           file="Images/ironMountain.jpg"/>
