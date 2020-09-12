@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="ah3bnU" name="true noise - sherpa" projectType="audioplug"
               jucerVersion="5.4.7" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              pluginFormats="buildAAX,buildAU,buildVST,buildVST3" pluginManufacturer="true noise"
+              pluginFormats="buildAU,buildVST,buildVST3" pluginManufacturer="true noise"
               companyName="True Noise" pluginName="sherpa" pluginDesc="topographic synthesizer">
   <MAINGROUP id="AWFTiX" name="true noise - sherpa">
     <FILE id="sAOnNN" name="everest.jpg" compile="0" resource="1" file="Images/everest.jpg"/>
