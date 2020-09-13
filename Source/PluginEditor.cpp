@@ -36,11 +36,27 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     
     // Source Select Combo Box
     addAndMakeVisible(sourceSelect);
+
+#define EVEREST    0
+#define IRON       1
+#define SOUTH      2
+#define HIMALAYAS  3
+#define TIAN       4
+#define RELIEF_2   5
+#define VICTOIRE   6
+#define MOON       7
+#define SIERRA     8
+
     sourceSelect.addItem("Everest", 1);
     sourceSelect.addItem("Iron Mountain", 2);
     sourceSelect.addItem("South Saddle", 3);
-    sourceSelect.addItem("Cascade", 4);
-    sourceSelect.addItem("The Long Dark", 5);
+    sourceSelect.addItem("Himalayas", 4);
+    sourceSelect.addItem("Tian Shan", 5);
+    sourceSelect.addItem("Relief", 6);
+    sourceSelect.addItem("Sante-Victoire", 7);
+    sourceSelect.addItem("Moon", 8);
+    sourceSelect.addItem("Sierras", 9);
+
     sourceSelect.onChange = [this] { sourceChanged(); };
     sourceSelectionP.reset(new ComboBoxAttachment(vts, "sourceSelection", sourceSelect));
     

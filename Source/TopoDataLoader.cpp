@@ -7,23 +7,39 @@ TopoDataLoader::TopoDataLoader(int choice)
     switch (choice)
     {
     case EVEREST:
-        image = ImageCache::getFromMemory(BinaryData::everest_jpg, BinaryData::everest_jpgSize);
+        image = EVEREST_FILE;
         break;
 
     case IRON:
-        image = ImageCache::getFromMemory(BinaryData::ironMountain_jpg, BinaryData::ironMountain_jpgSize);
+        image = IRON_FILE;
         break;
 
     case SOUTH:
-        image = ImageCache::getFromMemory(BinaryData::southSaddle_jpg, BinaryData::southSaddle_jpgSize);
+        image = SOUTH_FILE;
         break;
 
-    case LONGDARK:
-        image = ImageCache::getFromMemory(BinaryData::theLongDark_jpg, BinaryData::theLongDark_jpgSize);
+    case HIMALAYAS:
+        image = HIMALAYAS_FILE;
         break;
 
-    case CASCADES:
-        image = ImageCache::getFromMemory(BinaryData::cascade_jpg, BinaryData::cascade_jpgSize);
+    case TIAN:
+        image = TIAN_FILE;
+        break;
+
+    case RELIEF_2:
+        image = RELIEF_2_FILE;
+        break;
+
+    case VICTOIRE:
+        image = VICTOIRE_FILE;
+        break;
+
+    case SIERRA:
+        image = SIERRA_FILE;
+        break;
+
+    case MOON:
+        image = MOON_FILE;
         break;
     }
 

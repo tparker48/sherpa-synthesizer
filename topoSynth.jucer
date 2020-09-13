@@ -6,11 +6,17 @@
               companyName="True Noise" pluginName="sherpa" pluginDesc="topographic synthesizer">
   <MAINGROUP id="AWFTiX" name="true noise - sherpa">
     <FILE id="sAOnNN" name="everest.jpg" compile="0" resource="1" file="Images/everest.jpg"/>
+    <FILE id="VfTmlj" name="tianShan.png" compile="0" resource="1" file="Images/tianShan.png"/>
+    <FILE id="H8QpxW" name="sierra.jpg" compile="0" resource="1" file="Images/sierra.jpg"/>
+    <FILE id="MOdi0I" name="sainte-victoire.jpg" compile="0" resource="1"
+          file="Images/sainte-victoire.jpg"/>
+    <FILE id="Q0kKiv" name="moon.jpg" compile="0" resource="1" file="Images/moon.jpg"/>
+    <FILE id="UvRMZx" name="unknownRelief2.jpg" compile="0" resource="1"
+          file="Images/unknownRelief2.jpg"/>
+    <FILE id="lwsNN7" name="himalayas.jpg" compile="0" resource="1" file="Images/himalayas.jpg"/>
     <FILE id="BWPQ7y" name="ironMountain.jpg" compile="0" resource="1"
           file="Images/ironMountain.jpg"/>
     <FILE id="rY39P9" name="southSaddle.jpg" compile="0" resource="1" file="Images/southSaddle.jpg"/>
-    <FILE id="lJYdaq" name="theLongDark.jpg" compile="0" resource="1" file="Images/theLongDark.jpg"/>
-    <FILE id="coWs8a" name="cascade.jpg" compile="0" resource="1" file="Images/cascade.jpg"/>
     <GROUP id="{229152B0-76CB-1BA5-18A6-F29A22A4F618}" name="Source">
       <GROUP id="{910420FB-28D9-462D-B3CA-5CCF20AD85B9}" name="UI">
         <FILE id="nTMoPE" name="ButtonLookAndFeel.cpp" compile="1" resource="0"
