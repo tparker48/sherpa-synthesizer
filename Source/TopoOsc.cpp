@@ -9,7 +9,8 @@ void TopoVoice::startNote (int midiNoteNumber, float velocity,
     x = params->xPhase * (topoData->width - 1);
     y = params->yPhase * (topoData->height - 1);
     level = velocity * 0.1;
-    tailOff = 0.0, tailOn = 0.05;
+    tailOff = 0.0;
+    tailOn = 0.05;
 
     yReverse = false;
 
