@@ -102,6 +102,7 @@ void TopoSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; i++)
         buffer.clear(i, 0, buffer.getNumSamples());
 
+    int type = getFilterType();
     float cutoff = getCutoff();
     float resonance = getResonance();
 
@@ -112,8 +113,8 @@ void TopoSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     filterRight.setResonance(resonance);
 
     topoSynth.renderNextAudioBlock(buffer, 0, buffer.getNumSamples(), midiMessages);
-    filterLeft.processBlock(buffer,  0, LOWPASS);
-    filterRight.processBlock(buffer, 1, LOWPASS);
+    filterLeft.processBlock(buffer,  0, type);
+    filterRight.processBlock(buffer, 1, type);
   
 }
 
@@ -162,7 +163,7 @@ AudioProcessorValueTreeState::ParameterLayout TopoSynthAudioProcessor::createPar
     auto sourceSelection = std::make_unique<AudioParameterFloat>("sourceSelection", "Source", 1.0, NUM_SOURCES, 1.0);
 
     auto gain = std::make_unique<AudioParameterFloat>("gain", "Gain",
-        NormalisableRange<float>(0.0f, 1.25f, 0.01f), 1.0f);
+        NormalisableRange<float>(0.0f, 1.25f, 0.001f), 1.0f);
 
     auto xPhase = std::make_unique<AudioParameterFloat>("xPhase", "X Phase",
         NormalisableRange<float>(0.0f, .99f, false), 0.2f);
@@ -182,14 +183,17 @@ AudioProcessorValueTreeState::ParameterLayout TopoSynthAudioProcessor::createPar
         NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.2f);
 
     auto yRate = std::make_unique<AudioParameterFloat>("yRate", "Y Rate",
-        NormalisableRange<float>(0.01f, 850.0f, 0.01f, 0.5f), 250.0f);
+        NormalisableRange<float>(0.01f, 850.0f, 0.01f, 0.5f), 250.0f); 
 
+    auto filterType = std::make_unique<AudioParameterInt>("filterType", "Filter Type", 0,1,0);
 
     auto filterCutoff = std::make_unique<AudioParameterFloat>("filterCutoff", "Filter Cutoff",
-        NormalisableRange<float>(50.00f, 20000.0f, 0.001f, .45f), 4000.0f);
+        NormalisableRange<float>(75.00f, 20000.0f, 0.001f, .275f), 4000.0f);
 
     auto filterResonance = std::make_unique<AudioParameterFloat>("filterResonance", "Filter Resonance",
         NormalisableRange<float>(0.0f, 1.0f, 0.001f), .2f);
+
+    auto colorScheme = std::make_unique<AudioParameterInt>("colorScheme", "Color Scheme", 1,2,1);
 
     params.push_back(std::move(sourceSelection));
     params.push_back(std::move(gain));
@@ -200,8 +204,10 @@ AudioProcessorValueTreeState::ParameterLayout TopoSynthAudioProcessor::createPar
     params.push_back(std::move(yPhase));
     params.push_back(std::move(yScale));
     params.push_back(std::move(yRate));
+    params.push_back(std::move(filterType));
     params.push_back(std::move(filterCutoff));
     params.push_back(std::move(filterResonance));
+    params.push_back(std::move(colorScheme));
 
     return { params.begin(), params.end() };
 }
@@ -215,6 +221,7 @@ float TopoSynthAudioProcessor::getCutoff()
     }
     else return 600.0f;
 }
+
 float TopoSynthAudioProcessor::getResonance()
 {
     auto x = vts.getRawParameterValue("filterResonance");
@@ -223,4 +230,14 @@ float TopoSynthAudioProcessor::getResonance()
         return (*x * .87f) + .05f;
     }
     else return 0.2f;
+}
+
+float TopoSynthAudioProcessor::getFilterType()
+{
+    auto x = vts.getRawParameterValue("filterType");
+    if (x != NULL)
+    {
+        return (*x) + 1;
+    }
+    else return LOWPASS;
 }

@@ -46,15 +46,33 @@ TopoDataLoader::TopoDataLoader(int choice)
     int w = image.getWidth();
     int h = image.getHeight();
 
+    float maxValue = -1.0;
+    float minValue = 1.0;
+    float pixelVal;
+
     td.data.resize(w);
     for (int x = 0; x < w; x++)
     {
         td.data[x].resize(h);
 
-
         for (int y = 0; y < h; y++)
         {
-            td.data[x][y] = 2.0f * (image.getPixelAt(x, y).getBrightness()) - 1.0f;
+            pixelVal = image.getPixelAt(x, y).getBrightness();
+            td.data[x][y] = pixelVal; 
+            
+            if (pixelVal > maxValue) maxValue = pixelVal;
+            if (pixelVal < minValue) minValue = pixelVal;
+        }
+    }
+
+    // normalize
+    for (int x = 0; x < w; x++)
+    {
+        for (int y = 0; y < h; y++)
+        {
+            pixelVal = td.data[x][y];
+            pixelVal = (pixelVal - minValue) / (maxValue - minValue);
+            td.data[x][y] = (2.0f * pixelVal) - 1.0f;
         }
     }
 

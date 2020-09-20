@@ -122,10 +122,10 @@ void TopoVoice::incrementPhase()
 
 void TopoVoice::valueCapX()
 {
-    if (x >= std::min( (int)(topoData->width * (params->xScale + params->xPhase)) ,topoData->width))
+    int maxLegal = std::min((int)((topoData->width - 1) * (params->xScale + params->xPhase)), topoData->width - 1);
+    if (x > maxLegal)
     {
-        int overflow = x - std::min((int)(topoData->width * (params->xScale + params->xPhase)), topoData->width);
-        x = (params->xPhase * topoData->width);
+        x = ((topoData->width - 1) * params->xPhase) + (int(round(x)) % maxLegal);
     }
 }
 

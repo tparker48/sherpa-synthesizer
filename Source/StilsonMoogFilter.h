@@ -9,9 +9,9 @@ Which was based on the work of Tim Stilson
 #pragma once
 #include <JuceHeader.h>
 
-#define LOWPASS 0
-#define HIGHPASS 1
+#define LOWPASS 1
 #define BANDPASS 2
+#define HIGHPASS 3
 
 class StilsonMoogFilter
 {
@@ -34,6 +34,6 @@ private:
 
     float Q,p;
     float saturationAmount;
-    
+
     const float saturationLimit = 0.95;
 };

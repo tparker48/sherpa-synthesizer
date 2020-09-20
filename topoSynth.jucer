@@ -5,6 +5,8 @@
               pluginFormats="buildAU,buildVST,buildVST3" pluginManufacturer="true noise"
               companyName="True Noise" pluginName="sherpa" pluginDesc="topographic synthesizer">
   <MAINGROUP id="AWFTiX" name="true noise - sherpa">
+    <FILE id="rxh80j" name="VST_Compatible_Logo_Steinberg_with_TM.png"
+          compile="0" resource="1" file="../../../Desktop/VST_Compatible_Logo_Steinberg_with_TM.png"/>
     <FILE id="sAOnNN" name="everest.jpg" compile="0" resource="1" file="Images/everest.jpg"/>
     <FILE id="VfTmlj" name="tianShan.png" compile="0" resource="1" file="Images/tianShan.png"/>
     <FILE id="H8QpxW" name="sierra.jpg" compile="0" resource="1" file="Images/sierra.jpg"/>
@@ -23,14 +25,26 @@
               file="Source/UI/ButtonLookAndFeel.cpp"/>
         <FILE id="VbVGtR" name="ButtonLookAndFeel.h" compile="0" resource="0"
               file="Source/UI/ButtonLookAndFeel.h"/>
+        <FILE id="HGQXxp" name="CloseButtonLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/UI/CloseButtonLookAndFeel.cpp"/>
+        <FILE id="j4x9yV" name="CloseButtonLookAndFeel.h" compile="0" resource="0"
+              file="Source/UI/CloseButtonLookAndFeel.h"/>
         <FILE id="WciHGr" name="DialLookAndFeel.cpp" compile="1" resource="0"
               file="Source/UI/DialLookAndFeel.cpp"/>
         <FILE id="CTmV8J" name="DialLookAndFeel.h" compile="0" resource="0"
               file="Source/UI/DialLookAndFeel.h"/>
+        <FILE id="b9sY9u" name="NextButtonLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/UI/NextButtonLookAndFeel.cpp"/>
+        <FILE id="SoAiyF" name="NextButtonLookAndFeel.h" compile="0" resource="0"
+              file="Source/UI/NextButtonLookAndFeel.h"/>
         <FILE id="pjmjfv" name="SliderLookAndFeel.cpp" compile="1" resource="0"
               file="Source/UI/SliderLookAndFeel.cpp"/>
         <FILE id="YcI8A4" name="SliderLookAndFeel.h" compile="0" resource="0"
               file="Source/UI/SliderLookAndFeel.h"/>
+        <FILE id="lBuzjm" name="ToggleButtonLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/UI/ToggleButtonLookAndFeel.cpp"/>
+        <FILE id="jvxRoq" name="ToggleButtonLookAndFeel.h" compile="0" resource="0"
+              file="Source/UI/ToggleButtonLookAndFeel.h"/>
       </GROUP>
       <GROUP id="{FE828A27-D16D-CF77-3C09-AD6B7E7137DE}" name="Data Loading">
         <FILE id="L4krej" name="TopoDataLoader.cpp" compile="1" resource="0"

@@ -80,7 +80,7 @@ void StilsonMoogFilter::processBlock(AudioBuffer<float>& buffer, int channel, in
 			result = input - output;
 			break;
 		case BANDPASS:
-			result = 3 * state[2] - output;
+			result = 3.0f*state[2] - output;
 			break;
 		default:
 			result = output;
@@ -96,7 +96,7 @@ float StilsonMoogFilter::saturate(float input)
 {
 	float x1 = fabsf(input + saturationLimit);
 	float x2 = fabsf(input - saturationLimit);
-	return (saturationAmount)*(0.5f * (x1 - x2)) + (1.0f - saturationAmount)*(input);
+	return (0.5f * (x1 - x2));
 }
 
 float StilsonMoogFilter::interpolate(float ratio, float a, float b)

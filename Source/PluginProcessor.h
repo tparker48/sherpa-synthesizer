@@ -49,6 +49,7 @@ public:
     TopoOscParameters topoParams;
 
 private:
+    float getFilterType();
     float getCutoff();
     float getResonance();
 

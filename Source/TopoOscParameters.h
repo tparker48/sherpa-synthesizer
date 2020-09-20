@@ -5,6 +5,9 @@
 #define X_SCALE_MEDIUM 2
 #define X_SCALE_SMALL 1
 
+#define FILTER_BPF 2
+#define FILTER_LPF 1
+
 #define NUM_SOURCES 9
 
 #define EVEREST    0
