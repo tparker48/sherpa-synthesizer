@@ -40,7 +40,6 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     addAndMakeVisible(colorChoice);
     colorChoice.addItem("I", 1);
     colorChoice.addItem("II", 2);
-    colorChoice.addItem("III", 3);
     colorChoice.onChange = [this] {colorsChanged(); };
     colorChoiceP.reset(new ComboBoxAttachment(vts, "colorScheme", colorChoice));
 
@@ -656,7 +655,10 @@ void TopoSynthAudioProcessorEditor::cycleColorScheme(int dir)
     {
         scheme = numColorSchemes - 1;
     }
-    scheme %= numColorSchemes;
+    else if(scheme > numColorSchemes)
+    {
+        scheme = 0;
+    }
 
     colorChoice.setSelectedId(scheme + 1);
 

@@ -37,7 +37,7 @@ private:
     TopoSynthAudioProcessor& processor;
     AudioProcessorValueTreeState& vts;
     
-    int numColorSchemes = 3;
+    int numColorSchemes = 2;
     int scheme;
     Colour Colors[3][4];
     Colour Grey, Red, Orange, Yellow, Green;
