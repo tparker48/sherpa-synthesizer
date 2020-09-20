@@ -5,10 +5,10 @@
               pluginFormats="buildAU,buildVST3" pluginManufacturer="true noise"
               companyName="True Noise" pluginName="sherpa" pluginDesc="topographic synthesizer">
   <MAINGROUP id="AWFTiX" name="true noise - sherpa">
-    <FILE id="rxh80j" name="VST_Compatible_Logo_Steinberg_with_TM.png"
-          compile="0" resource="1" file="../../../Desktop/VST_Compatible_Logo_Steinberg_with_TM.png"/>
     <FILE id="sAOnNN" name="everest.jpg" compile="0" resource="1" file="Images/everest.jpg"/>
     <FILE id="VfTmlj" name="tianShan.png" compile="0" resource="1" file="Images/tianShan.png"/>
+    <FILE id="VtXdnU" name="VST_Compatible_Logo_Steinberg_with_TM.png"
+          compile="0" resource="1" file="Images/VST_Compatible_Logo_Steinberg_with_TM.png"/>
     <FILE id="H8QpxW" name="sierra.jpg" compile="0" resource="1" file="Images/sierra.jpg"/>
     <FILE id="MOdi0I" name="sainte-victoire.jpg" compile="0" resource="1"
           file="Images/sainte-victoire.jpg"/>
