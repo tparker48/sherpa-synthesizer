@@ -193,7 +193,7 @@ AudioProcessorValueTreeState::ParameterLayout TopoSynthAudioProcessor::createPar
     auto filterResonance = std::make_unique<AudioParameterFloat>("filterResonance", "Filter Resonance",
         NormalisableRange<float>(0.0f, 1.0f, 0.001f), .2f);
 
-    auto colorScheme = std::make_unique<AudioParameterInt>("colorScheme", "Color Scheme", 1,2,1);
+    auto colorScheme = std::make_unique<AudioParameterInt>("colorScheme", "Color Scheme", 1,4,1);
 
     params.push_back(std::move(sourceSelection));
     params.push_back(std::move(gain));

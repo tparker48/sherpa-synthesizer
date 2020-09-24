@@ -15,6 +15,12 @@ public:
         this->setColour(Slider::ColourIds::textBoxOutlineColourId, Colour());
     }
 
+    void setColors(Colour dark, Colour light)
+    {
+        this->dark = dark;
+        this->light = light;
+    }
+
     void drawLinearSlider(Graphics&, int x, int y, int width, int height,
         float sliderPos, float minSliderPos, float maxSliderPos,
         const Slider::SliderStyle, Slider&) override;

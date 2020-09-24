@@ -37,10 +37,10 @@ private:
     TopoSynthAudioProcessor& processor;
     AudioProcessorValueTreeState& vts;
     
-    int numColorSchemes = 2;
+    int numColorSchemes;
     int scheme;
-    Colour Colors[3][4];
-    Colour Grey, Red, Orange, Yellow, Green;
+    Colour Colors[4][14];
+    Colour Grey;
     
     ComboBox sourceSelect, buttonState, colorChoice;
 
@@ -52,13 +52,13 @@ private:
     ToggleButton xScaleFull, xScaleMedium, xScaleSmall;
     ToggleButton filterTypeToggle;
 
-    SliderLookAndFeel* customSlider;
-    DialLookAndFeel* customDial;
-    ButtonLookAndFeel* customButton;
-    ToggleButtonLookAndFeel* customToggleButton;
-    CloseButtonLookAndFeel* customCloseButton;
-    NextButtonLookAndFeel* customRightButton;
-    NextButtonLookAndFeel* customLeftButton;
+    SliderLookAndFeel *customSliderX, *customSliderY;
+    DialLookAndFeel *customDialX, *customDialFilter, *customDialSource;
+    ButtonLookAndFeel *customButton;
+    ToggleButtonLookAndFeel *customToggleButton;
+    CloseButtonLookAndFeel *customCloseButton;
+    NextButtonLookAndFeel *customRightButton;
+    NextButtonLookAndFeel *customLeftButton;
 
     float divisionWidthRatio, divisionHeightRatio, smallSectionWidthRatio, largeSectionWidthRatio, sectionHeightRatio;
     float divisionW, divisionH, smallSectionW, largeSectionW, sectionH;
@@ -84,6 +84,9 @@ private:
     void paintAboutMenu(Graphics& g);
     void resizedAboutMenu();
     void setAboutVisibility(bool visible);
+
+    void updateLookAndFeels();
+    void initLookAndFeels();
 
     void openAboutMenu();
     void closeAboutMenu();

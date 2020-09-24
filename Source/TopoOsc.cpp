@@ -99,7 +99,7 @@ void TopoVoice::checkSourceSwitch()
 
 void TopoVoice::updateDeltas()
 {
-    float hz = this->noteHz * (1.0 - params->xTuning);
+    float hz = this->noteHz *(1.0 - params->xTuning);
     xDelta = (params->xScale * topoData->width) * hz / sampleRate;
     yDelta = params->yRate * (params->yScale / sampleRate);
 }
@@ -125,7 +125,9 @@ void TopoVoice::valueCapX()
     int maxLegal = std::min((int)((topoData->width - 1) * (params->xScale + params->xPhase)), topoData->width - 1);
     if (x > maxLegal)
     {
-        x = ((topoData->width - 1) * params->xPhase) + (int(round(x)) % maxLegal);
+        int minLegal = (topoData->width - 1) * params->xPhase;
+        int window = maxLegal - minLegal;
+        x = minLegal + ((int(round(x)) - minLegal) % window);
     }
 }
 

@@ -12,13 +12,26 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
 
     vstLogo = ImageCache::getFromMemory(BinaryData::VST_Compatible_Logo_Steinberg_with_TM_png, BinaryData::VST_Compatible_Logo_Steinberg_with_TM_pngSize);
 
-    Grey = Colour(60, 60, 60);
+    Grey = Colour(60, 60, 60); 
 
     // default
-    Colors[0][0] = Colour(214, 40, 40);
-    Colors[0][1] = Colour(247, 127, 0);
-    Colors[0][2] = Colour(252, 191, 73);
-    Colors[0][3] = Colour(95, 198, 148);
+    Colors[0][0] = Colour(214, 40, 40); // section 1
+    Colors[0][1] = Colour(247, 127, 0); // section 2
+    Colors[0][2] = Colour(252, 191, 73);// section 3
+    Colors[0][3] = Colour(95, 198, 148);// section 4
+
+    Colors[0][4] = Grey; // section 1 UI dark
+    Colors[0][5] = Grey; // section 2 UI dark
+    Colors[0][6] = Grey;// section 3 UI dark
+    Colors[0][7] = Grey;// section 4 UI dark
+
+    Colors[0][8] = Colours::white; // section 1 UI light
+    Colors[0][9] = Colours::white; // section 2 UI light
+    Colors[0][10] = Colours::white; // section 3 UI light
+    Colors[0][11] = Colours::white; // section 4 UI light
+
+    Colors[0][12] = Grey;                // BG 
+    Colors[0][13] = Grey;                // text 
     
     // altI
     Colors[1][0] = Colour(140, 126, 182);
@@ -26,23 +39,61 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     Colors[1][2] = Colour(246, 114, 128);
     Colors[1][3] = Colour(248, 177, 149);
 
+    Colors[1][4] = Grey; // section 1 UI dark
+    Colors[1][5] = Grey; // section 2 UI dark
+    Colors[1][6] = Grey;// section 3 UI dark
+    Colors[1][7] = Grey;// section 4 UI dark
+
+    Colors[1][8] = Colours::white; // section 1 UI light
+    Colors[1][9] = Colours::white; // section 2 UI light
+    Colors[1][10] = Colours::white; // section 3 UI light
+    Colors[1][11] = Colours::white; // section 4 UI light
+
+    Colors[1][12] = Grey;
+    Colors[1][13] = Grey;
+
+    
     // altII
-    //Colors[2][0] = Colour(129, 108, 154);
-    //Colors[2][1] = Colour(177, 92, 111);
-    //Colors[2][2] = Colour(236, 114, 99);
-    //Colors[2][3] = Colour(254, 190, 126);
+    Colors[2][0] = Colour(182, 176, 165);
+    Colors[2][1] = Colour(182, 176, 165);
+    Colors[2][2] = Colour(182, 176, 165);
+    Colors[2][3] = Colour(182, 176, 165);
+
+    Colors[2][4] = Colour(64, 61, 57); // section 1 UI dark
+    Colors[2][5] = Colour(64, 61, 57); // section 2 UI dark
+    Colors[2][6] = Colour(64, 61, 57);// section 3 UI dark
+    Colors[2][7] = Colour(64, 61, 57);// section 4 UI dark
+
+    Colors[2][8] =  Colour(252, 191, 73); // section 1 UI light
+    Colors[2][9] =  Colour(252, 191, 73); // section 2 UI light
+    Colors[2][10] = Colour(252, 191, 73); // section 3 UI light
+    Colors[2][11] = Colour(252, 191, 73); // section 4 UI light
+
+    Colors[2][12] = Colour(64, 61, 57);
+    Colors[2][13] = Colour(64, 61, 57);
+
+
+    // altIII
+    Colors[3][0] = Colour(47, 47, 47);
+    Colors[3][1] = Colour(47, 47, 47);
+    Colors[3][2] = Colour(47, 47, 47);
+    Colors[3][3] = Colour(47, 47, 47);
+
+    Colors[3][4] = Colour(59, 59, 59); // section 1 UI dark
+    Colors[3][5] = Colour(59, 59, 59); // section 2 UI dark
+    Colors[3][6] = Colour(59, 59, 59);// section 3 UI dark
+    Colors[3][7] = Colour(59, 59, 59);// section 4 UI dark
+
+    Colors[3][8] =  Colour(252, 191, 73);  // section 1 UI light
+    Colors[3][9] =  Colour(252, 191, 73);  // section 2 UI light
+    Colors[3][10] = Colour(252, 191, 73); // section 3 UI light
+    Colors[3][11] = Colour(252, 191, 73); // section 4 UI light
+
+    Colors[3][12] = Colour(59, 59, 59);
+    Colors[3][13] = Colour(210,210,210);
 
     scheme = 0;
-    numColorSchemes = 2;
-
-
-    // color scheme state
-    addAndMakeVisible(colorChoice);
-    colorChoice.addItem("I", 1);
-    colorChoice.addItem("II", 2);
-    colorChoice.onChange = [this] {colorsChanged(); };
-    colorChoiceP.reset(new ComboBoxAttachment(vts, "colorScheme", colorChoice));
-
+    numColorSchemes = 4;
 
     divisionWidthRatio = 0.014;
     divisionHeightRatio = 0.028;
@@ -52,22 +103,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
    
     this->addMouseListener(new MouseListener, false);
     
-    customSlider = new SliderLookAndFeel(Grey, Colours::white);
-    customDial = new DialLookAndFeel(Grey, Colours::white);
-    customButton = new ButtonLookAndFeel(Grey, Colours::white);
-    customToggleButton = new ToggleButtonLookAndFeel(Grey, Colours::white);
-    customCloseButton = new CloseButtonLookAndFeel(Grey, Colours::white);
-    customRightButton = new NextButtonLookAndFeel(true, Grey, Colours::white);
-    customLeftButton = new NextButtonLookAndFeel(false, Grey, Colours::white);
-
-    getLookAndFeel().setColour(PopupMenu::ColourIds::backgroundColourId, Grey);
-    getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, (Colours::darkgrey));
-    getLookAndFeel().setColour(PopupMenu::ColourIds::textColourId, (Colours::white));
-    getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedTextColourId, (Colours::white));
-    sourceSelect.setColour(ComboBox::ColourIds::backgroundColourId, Grey);
-    sourceSelect.setColour(ComboBox::ColourIds::textColourId, (Colours::white));
-    sourceSelect.setColour(ComboBox::ColourIds::outlineColourId, Grey);
-    
+    initLookAndFeels();
 
     // Source Select Combo Box
     addAndMakeVisible(sourceSelect);
@@ -91,7 +127,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     gainP.reset(new SliderAttachment(vts, "gain", gain));
     gain.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     gain.setPopupDisplayEnabled(false, false, this);
-    gain.setLookAndFeel(customDial);
+    gain.setLookAndFeel(customDialSource);
     gain.setVelocityBasedMode(true);
 
 
@@ -101,7 +137,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     xPhase.setSliderStyle(Slider::LinearBarVertical);
     xPhase.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     xPhase.setPopupDisplayEnabled(false, false, this);
-    xPhase.setLookAndFeel(customSlider);
+    xPhase.setLookAndFeel(customSliderX);
 
     // X Scale Slider
     addAndMakeVisible(&xScale);
@@ -109,7 +145,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     xScale.setSliderStyle(Slider::LinearBarVertical);
     xScale.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     xScale.setPopupDisplayEnabled(false, false, this);
-    xScale.setLookAndFeel(customSlider);
+    xScale.setLookAndFeel(customSliderX);
 
     // X Tuning Dial
     addAndMakeVisible(&xTuning);
@@ -117,7 +153,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     xTuning.setSliderStyle(Slider::LinearBarVertical);
     xTuning.setTextBoxStyle(Slider::NoTextBox, false, 70, 30);
     xTuning.setPopupDisplayEnabled(false, false, this);
-    xTuning.setLookAndFeel(customDial);
+    xTuning.setLookAndFeel(customDialX);
     xTuning.setVelocityBasedMode(true);
     xTuning.setDoubleClickReturnValue(true, 0.5);
 
@@ -156,7 +192,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     yPhase.setSliderStyle(Slider::LinearBarVertical);
     yPhase.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     yPhase.setPopupDisplayEnabled(false, false, this);
-    yPhase.setLookAndFeel(customSlider);
+    yPhase.setLookAndFeel(customSliderY);
 
     // Y Rate
     addAndMakeVisible(&yRate);
@@ -164,7 +200,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     yRate.setSliderStyle(Slider::LinearBarVertical);
     yRate.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     yRate.setPopupDisplayEnabled(false, false, this);
-    yRate.setLookAndFeel(customSlider);
+    yRate.setLookAndFeel(customSliderY);
 
     // Y Scale
     addAndMakeVisible(&yScale);
@@ -172,7 +208,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     yScale.setSliderStyle(Slider::LinearBarVertical);
     yScale.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     yScale.setPopupDisplayEnabled(false, false, this);
-    yScale.setLookAndFeel(customSlider);
+    yScale.setLookAndFeel(customSliderY);
 
     // "I / II"
     addAndMakeVisible(&filterTypeToggle);
@@ -186,7 +222,7 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     filterCutoff.setSliderStyle(Slider::LinearBarVertical);
     filterCutoff.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     filterCutoff.setPopupDisplayEnabled(false, false, this);
-    filterCutoff.setLookAndFeel(customDial);
+    filterCutoff.setLookAndFeel(customDialFilter);
     filterCutoff.setVelocityBasedMode(true);
 
     // Filter Resonance
@@ -195,8 +231,18 @@ TopoSynthAudioProcessorEditor::TopoSynthAudioProcessorEditor (TopoSynthAudioProc
     filterResonance.setSliderStyle(Slider::LinearBarVertical);
     filterResonance.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     filterResonance.setPopupDisplayEnabled(false, false, this);
-    filterResonance.setLookAndFeel(customDial);
+    filterResonance.setLookAndFeel(customDialFilter);
     filterResonance.setVelocityBasedMode(true);
+
+
+    // color scheme state
+    addAndMakeVisible(colorChoice);
+    colorChoice.addItem("I", 1);
+    colorChoice.addItem("II", 2);
+    colorChoice.addItem("III", 3);
+    colorChoice.addItem("IIII", 4);
+    colorChoice.onChange = [this] { colorsChanged(); };
+    colorChoiceP.reset(new ComboBoxAttachment(vts, "colorScheme", colorChoice));
 
 
     gain.setVelocityModeParameters(1.0, 0, gainSensitivity, false);
@@ -235,8 +281,11 @@ TopoSynthAudioProcessorEditor::~TopoSynthAudioProcessorEditor()
     rightButton.setLookAndFeel(nullptr);
     closeAboutMenuButton.setLookAndFeel(nullptr);
     
-    delete customSlider;
-    delete customDial;
+    delete customSliderX;
+    delete customSliderY;
+    delete customDialSource;
+    delete customDialX;
+    delete customDialFilter;
     delete customButton;
     delete customToggleButton;
     delete customCloseButton;
@@ -247,7 +296,7 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
 {
     // Draw each background pannel
 
-    g.fillAll(Grey);
+    g.fillAll(Colors[scheme][12]);
 
     if (aboutMenuOpen)
     {
@@ -283,12 +332,12 @@ void TopoSynthAudioProcessorEditor::paint (Graphics& g)
     
 
     // Square off edges of the comboBox
-    g.setColour(Grey);
+    g.setColour(Colors[scheme][4]);
     g.fillRect(comboX, comboY, comboW, comboH);
 
 
     // Text
-    g.setColour(Grey);
+    g.setColour(Colors[scheme][13]);
 
     float fontHeader = getWidth() * 0.025;
     float fontLabel = getWidth() * 0.0175;
@@ -574,7 +623,7 @@ void TopoSynthAudioProcessorEditor::paintAboutMenu(Graphics& g)
     int h = getHeight();
 
     // Dark grey background
-    g.setColour(Grey.darker(0.85f));
+    g.setColour(Colors[scheme][6].darker(0.85f));
     g.fillRect(divisionW, divisionH, w - 2*divisionW, h - 2*divisionH);
 
     // color strip
@@ -655,7 +704,7 @@ void TopoSynthAudioProcessorEditor::cycleColorScheme(int dir)
     {
         scheme = numColorSchemes - 1;
     }
-    else if(scheme > numColorSchemes)
+    else if(scheme >= numColorSchemes)
     {
         scheme = 0;
     }
@@ -667,5 +716,97 @@ void TopoSynthAudioProcessorEditor::cycleColorScheme(int dir)
 void TopoSynthAudioProcessorEditor::colorsChanged()
 {
     scheme = colorChoice.getSelectedId() - 1;
+    updateLookAndFeels();
     repaint();
+}
+
+void TopoSynthAudioProcessorEditor::initLookAndFeels()
+{
+    // panel 1
+    Colour dark = Colors[scheme][4];
+    Colour light = Colors[scheme][8];
+
+    customDialSource = new DialLookAndFeel(dark, light);
+
+    getLookAndFeel().setColour(PopupMenu::ColourIds::backgroundColourId, dark);
+    getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, dark.darker(0.95));
+    getLookAndFeel().setColour(PopupMenu::ColourIds::textColourId, light);
+    getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedTextColourId, light);
+    sourceSelect.setColour(ComboBox::ColourIds::backgroundColourId, dark);
+    sourceSelect.setColour(ComboBox::ColourIds::textColourId, light);
+    sourceSelect.setColour(ComboBox::ColourIds::outlineColourId, dark);
+    sourceSelect.setColour(ComboBox::ColourIds::arrowColourId, light);
+    sourceSelect.setColour(ComboBox::ColourIds::buttonColourId, dark);
+
+    // panel 2
+    dark = Colors[scheme][5];
+    light = Colors[scheme][9];
+
+    customSliderX = new SliderLookAndFeel(dark, light);
+    customDialX = new DialLookAndFeel(dark, light);
+    customButton = new ButtonLookAndFeel(dark, light);
+
+    // panel 3
+    dark = Colors[scheme][6];
+    light = Colors[scheme][10];
+    customSliderY = new SliderLookAndFeel(dark, light);
+
+    //filter
+    dark = Colors[scheme][7];
+    light = Colors[scheme][11];
+    customDialFilter = new DialLookAndFeel(dark, light);
+    customToggleButton = new ToggleButtonLookAndFeel(dark, light);
+
+    // about
+    dark = Colors[scheme][12];
+    light = Colors[scheme][5];
+    customCloseButton = new CloseButtonLookAndFeel(dark, light);
+    customRightButton = new NextButtonLookAndFeel(true, dark, light);
+    customLeftButton = new NextButtonLookAndFeel(false, dark, light);
+}
+
+
+void TopoSynthAudioProcessorEditor::updateLookAndFeels()
+{
+    // panel 1
+    Colour dark = Colors[scheme][4];
+    Colour light = Colors[scheme][8];
+
+    customDialSource->setColors(dark, light);
+
+    getLookAndFeel().setColour(PopupMenu::ColourIds::backgroundColourId, dark);
+    getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, dark.darker(0.95));
+    getLookAndFeel().setColour(PopupMenu::ColourIds::textColourId, light);
+    getLookAndFeel().setColour(PopupMenu::ColourIds::highlightedTextColourId, light);
+    sourceSelect.setColour(ComboBox::ColourIds::backgroundColourId, dark);
+    sourceSelect.setColour(ComboBox::ColourIds::textColourId, light);
+    sourceSelect.setColour(ComboBox::ColourIds::outlineColourId, dark);
+    sourceSelect.setColour(ComboBox::ColourIds::arrowColourId, light);
+    sourceSelect.setColour(ComboBox::ColourIds::buttonColourId, dark);
+
+    // panel 2
+    dark = Colors[scheme][5];
+    light = Colors[scheme][9];
+
+    customSliderX->setColors(dark, light);
+    customDialX->setColors(dark, light);
+    customButton->setColors(dark, light);
+
+    // panel 3
+    dark = Colors[scheme][6];
+    light = Colors[scheme][10];
+    customSliderY->setColors(dark, light);
+
+    //filter
+    dark = Colors[scheme][7];
+    light = Colors[scheme][11];
+    customDialFilter->setColors(dark, light);
+    customToggleButton->setColors(dark, light);
+
+    // about
+    dark = Colors[scheme][12];
+    light = Colors[scheme][11];
+    customCloseButton->setColors(dark, light);
+    customRightButton->setColors(dark, light);
+    customLeftButton->setColors(dark, light);
 }
