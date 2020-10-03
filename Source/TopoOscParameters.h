@@ -25,9 +25,10 @@
 #define SOUTH_FILE      ImageCache::getFromMemory(BinaryData::southSaddle_jpg, BinaryData::southSaddle_jpgSize)
 #define HIMALAYAS_FILE  ImageCache::getFromMemory(BinaryData::himalayas_jpg, BinaryData::himalayas_jpgSize)
 #define TIAN_FILE       ImageCache::getFromMemory(BinaryData::tianShan_png, BinaryData::tianShan_pngSize)
-#define RELIEF_2_FILE   ImageCache::getFromMemory(BinaryData::unknownRelief2_jpg, BinaryData::unknownRelief2_jpgSize)
+#define RELIEF_2_FILE   ImageCache::getFromMemory(BinaryData::unknownRelief21_jpg, BinaryData::unknownRelief21_jpgSize)
 #define VICTOIRE_FILE    ImageCache::getFromMemory(BinaryData::saintevictoire_jpg, BinaryData::saintevictoire_jpgSize)
-#define MOON_FILE       ImageCache::getFromMemory(BinaryData::moon_jpg, BinaryData::moon_jpgSize)
+//#define MOON_FILE       ImageCache::getFromMemory(BinaryData::moon_jpg, BinaryData::moon_jpgSize)
+#define MOON_FILE     ImageCache::getFromMemory(BinaryData::moon_jpg, BinaryData::moon_jpgSize)
 #define SIERRA_FILE     ImageCache::getFromMemory(BinaryData::sierra_jpg, BinaryData::sierra_jpgSize)
 
 
@@ -35,9 +36,9 @@ struct TopoOscParameters
 {
     int sourceSelection;
     float gain;
-    float xScale, xPhase, xTuning;
+    double xScale, xPhase, xTuning;
     int xScaleMode;
-    float yRate, yScale, yPhase;
+    double yRate, yScale, yPhase;
 
     AudioProcessorValueTreeState* vts;
 };

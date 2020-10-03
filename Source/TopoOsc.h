@@ -54,17 +54,17 @@ private:
     void valueCapX(); // call after you increment x to avoid overflows
     void valueCapY(); // call after you increment y to avoid overflows
     float getSample();
-    float getParameter(std::string id);
+    double getParameter(std::string id);
     void updateParameters();
 
 
-    float noteHz, sampleRate;
+    double noteHz, sampleRate;
 
     float level = 1.0, tailOff = 0.0, tailOn = 0.0;
-    float x = 0.0, xDelta = 0.0;
-    float y = 0.0, yDelta = 0.0;
+    double x = 0.0, xDelta = 0.0;
+    double y = 0.0, yDelta = 0.0;
 
-    float xScaleModes[3] = { 0.1f, 0.25f, .5f };
+    double xScaleModes[3] = { 0.1, 0.25, .5 };
 
     bool yReverse;
 };

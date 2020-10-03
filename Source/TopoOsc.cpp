@@ -6,8 +6,8 @@ void TopoVoice::startNote (int midiNoteNumber, float velocity,
 {
     updateParameters();
 
-    x = params->xPhase * (topoData->width - 1);
-    y = params->yPhase * (topoData->height - 1);
+    x = params->xPhase * (topoData->width - 1.0);
+    y = params->yPhase * (topoData->height - 1.0);
     level = velocity * 0.1;
     tailOff = 0.0;
     tailOn = 0.05;
@@ -15,7 +15,7 @@ void TopoVoice::startNote (int midiNoteNumber, float velocity,
     yReverse = false;
 
     noteHz = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-    sampleRate = (float)getSampleRate();
+    sampleRate = getSampleRate();
     updateDeltas();
 }
 
@@ -30,8 +30,8 @@ void TopoVoice::stopNote(float /*velocity*/, bool allowTailOff)
     {
         clearCurrentNote();
         xDelta = 0.0;
-        x = params->xPhase * (topoData->width - 1);
-        y = params->yPhase * (topoData->height - 1);
+        x = params->xPhase * (topoData->width - 1.0);
+        y = params->yPhase * (topoData->height - 1.0);
     }
 }
 
@@ -99,7 +99,7 @@ void TopoVoice::checkSourceSwitch()
 
 void TopoVoice::updateDeltas()
 {
-    float hz = this->noteHz *(1.0 - params->xTuning);
+    double hz = this->noteHz *(1.0 - params->xTuning);
     xDelta = (params->xScale * topoData->width) * hz / sampleRate;
     yDelta = params->yRate * (params->yScale / sampleRate);
 }
@@ -127,7 +127,7 @@ void TopoVoice::valueCapX()
     {
         int minLegal = (topoData->width - 1) * params->xPhase;
         int window = maxLegal - minLegal;
-        x = minLegal + ((int(round(x)) - minLegal) % window);
+        x = minLegal + int(((int(round(x)) - minLegal) % window));
     }
 }
 
@@ -152,31 +152,36 @@ float TopoVoice::getSample()
 {
     if (topoData == NULL) return 0.0;
 
-    int xRounded = round(x);
-    int yRounded = round(y);
-
-    if (xRounded >= topoData->width) xRounded = floor(params->xPhase * (topoData->width-1));
-    if (yRounded >= topoData->height) yRounded = floor(params->yPhase * (topoData->height-1));
+    //int xRounded = round(x);
+    //int yRounded = round(y);
+    //
+    //if (xRounded >= topoData->width) xRounded = floor(params->xPhase * (topoData->width-1.0));
+    //if (yRounded >= topoData->height) yRounded = floor(params->yPhase * (topoData->height-1.0));
 
     //return topoData->data[xRounded][yRounded];
 
+    int xFloor = floor(x);
+    int xCeil = ceil(x);
+    double xRatio = x - xFloor;
+
     int yFloor = floor(y);
     int yCeil = ceil(y);
-    float ratio = y - yFloor;
+    double yRatio = y - yFloor;
     
     if (yCeil >= topoData->height) yCeil = yFloor;
     
-    float yInterp = topoData->data[xRounded][yFloor] *(1.0f - ratio) + topoData->data[xRounded][yCeil] * (ratio);
+    double interp = (1.0 - xRatio) * (topoData->data[xFloor][yFloor] * (1.0 - yRatio) + topoData->data[xFloor][yCeil] * (yRatio))
+                        + (xRatio) * (topoData->data[xCeil][yFloor] * (1.0 - yRatio) + topoData->data[xCeil][yCeil] * (yRatio));
     if (tailOn < .95)
     {
         tailOn *= 1.01;
-        return yInterp*tailOn;
+        return interp*tailOn;
     }
-    else return yInterp;
+    else return interp;
 
 }
 
-float TopoVoice::getParameter(std::string id)
+double TopoVoice::getParameter(std::string id)
 {
     auto x = params->vts->getRawParameterValue(id);
     if (x != NULL)
@@ -193,9 +198,9 @@ void TopoVoice::updateParameters()
 {
     params->gain = getParameter("gain");
     params->xScaleMode = (int)getParameter("xScaleRange");
-    params->xScale = .1f + getParameter("xScale") * xScaleModes[params->xScaleMode - 1];
+    params->xScale = .1 + getParameter("xScale") * xScaleModes[params->xScaleMode - 1];
     params->xPhase = getParameter("xPhase");
-    params->xTuning = -((getParameter("xTuning") * .5f) - 0.25f);
+    params->xTuning = -((getParameter("xTuning") * .25f) - 0.125f);
     params->xScaleMode = getParameter("xScaleMode");
     params->yRate = getParameter("yRate");
     params->yScale = getParameter("yScale");
