@@ -1,5 +1,5 @@
 # Sherpa - Topographic Synthesizer
-https://truenoise.shop
+download here: https://truenoise.shop
 
 Sherpa is a VST3/AU that generates unique wave forms using images of terrain. 
 
