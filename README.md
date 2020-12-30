@@ -1,10 +1,12 @@
-# sherpa - topographic synthesizer
+# Sherpa - Topographic Synthesizer
 https://truenoise.shop
 
-sherpa is a VST that generates unique wave forms using topographic data. Built using the JUCE framework.
+Sherpa is a VST3/AU that generates unique wave forms using topographic data. Compatible with most modern DAWs. Built using the JUCE framework.
 
 <img src="https://github.com/tparker48/theMountain/blob/master/Images/UI%20final.png" />
 
-some demos: 
+# Demos: 
+
 https://soundcloud.com/6009/gymnopedie-no1-sherpa-demo-1
+
 https://soundcloud.com/6009/topo-synth-demo-0
