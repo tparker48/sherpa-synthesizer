@@ -1,7 +1,9 @@
 # Sherpa - Topographic Synthesizer
 https://truenoise.shop
 
-Sherpa is a VST3/AU that generates unique wave forms using images of terrain. Create new sounds by exploring different terrain sources.
+Sherpa is a VST3/AU that generates unique wave forms using images of terrain. 
+
+Create new sounds by exploring different terrain sources.
 
 Compatible with most modern DAWs. Built using the JUCE framework.
 
