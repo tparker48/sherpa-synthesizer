@@ -6,9 +6,9 @@ Create new sounds by exploring different terrain sources.
 
 Compatible with most modern DAWs. Built using the JUCE framework.
 
-## Download: https://truenoise.shop
-
 <img src="https://github.com/tparker48/theMountain/blob/master/Images/UI%20final.png" />
+
+## Download: https://truenoise.shop
 
 # Demos: 
 
