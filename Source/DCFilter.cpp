@@ -1,15 +1,8 @@
 /*
-  ==============================================================================
-
-    DCBiasCorrection.cpp
-    Created: 16 Jan 2021 3:32:21pm
-    Author:  Tom
-
-  ==============================================================================
+ adapted from https://www.dsprelated.com/freebooks/filters/DC_Blocker.html and https://www.musicdsp.org/en/latest/Filters/135-dc-filter.html
 */
 
 #include "DCFilter.h"
-
 
 void DCFilter::init(float sampleRate)
 {
