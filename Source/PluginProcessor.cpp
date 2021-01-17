@@ -71,6 +71,8 @@ void TopoSynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     topoSynth.prepareToPlay(sampleRate);
     filterLeft.init(sampleRate);
     filterRight.init(sampleRate);
+    dcLeft.init(sampleRate);
+    dcRight.init(sampleRate);
 }
 
 void TopoSynthAudioProcessor::releaseResources()
@@ -115,6 +117,9 @@ void TopoSynthAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuff
     topoSynth.renderNextAudioBlock(buffer, 0, buffer.getNumSamples(), midiMessages);
     filterLeft.processBlock(buffer,  0, type);
     filterRight.processBlock(buffer, 1, type);
+
+    dcLeft.processBlock(buffer, 0);
+    dcRight.processBlock(buffer, 1);
   
 }
 

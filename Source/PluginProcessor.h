@@ -4,6 +4,7 @@
 #include "PolySynth.h"
 #include "TopoOsc.h"
 #include "StilsonMoogFilter.h"
+#include "DCFilter.h"
 
 class TopoSynthAudioProcessor  : public AudioProcessor
 {
@@ -55,6 +56,7 @@ private:
 
     MidiKeyboardState keyboardState;
     StilsonMoogFilter filterLeft, filterRight;
+    DCFilter dcLeft, dcRight;
     TopoVoice* tempVoice;
 
     AudioProcessorValueTreeState vts;

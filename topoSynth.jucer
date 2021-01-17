@@ -67,6 +67,8 @@
       <FILE id="zhUcuK" name="PolySynth.h" compile="0" resource="0" file="Source/PolySynth.h"/>
       <FILE id="g2ExoZ" name="TopoOsc.cpp" compile="1" resource="0" file="Source/TopoOsc.cpp"/>
       <FILE id="K839XH" name="TopoOsc.h" compile="0" resource="0" file="Source/TopoOsc.h"/>
+      <FILE id="Qn8Vdd" name="DCFilter.cpp" compile="1" resource="0" file="Source/DCFilter.cpp"/>
+      <FILE id="yDGZkl" name="DCFilter.h" compile="0" resource="0" file="Source/DCFilter.h"/>
       <FILE id="HH4QlT" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="vJlLEc" name="PluginProcessor.h" compile="0" resource="0"
